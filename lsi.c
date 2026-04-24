@@ -4,6 +4,7 @@
 #include <string.h>
 #include "colors.h"
 
+// Selects the appropriate icon 
 char *getIcon (char *name , unsigned char type) {
     // Dierctory
     if (type == DT_DIR) return "";
@@ -87,6 +88,7 @@ char *getIcon (char *name , unsigned char type) {
     // Unknown
     return "";
 }
+// Selects the appropriate color
 char *getColor (char *name , unsigned char type) {
     // Dierctory
     if (type == DT_DIR) return BLUE;
@@ -172,25 +174,51 @@ char *getColor (char *name , unsigned char type) {
     // Unknown
     return RESET;
 }
+
+// Stores each item in a directory
+typedef struct
+{
+    char name[256];
+    unsigned char type;
+} Entry;
+
 int main(void){
     DIR * currentDir = opendir(".");
 
     struct dirent *entry;
+    Entry entries[1024];
+    int count = 0;
 
-    while((entry = readdir(currentDir)) != NULL){
-
+    // Loops through all the items and stores them in a struct
+    while ((entry = readdir(currentDir)) != NULL)
+    {
         if (!strcmp(entry->d_name,".") || !strcmp(entry->d_name,".."))
         {
             continue;
         }
 
-        printf("%s%s  %s%s\n",
-                getColor(entry->d_name, entry->d_type),  // color
-                getIcon(entry->d_name, entry->d_type),   // icon
-                entry->d_name,                           // name
-                RESET                                    // reset
-        );
+        strcpy(entries[count].name , entry->d_name);
+        entries[count].type = entry->d_type;
+        count += 1;
     }
+
+
 
     closedir(currentDir);
 }
+
+    // while((entry = readdir(currentDir)) != NULL){
+
+    //     if (!strcmp(entry->d_name,".") || !strcmp(entry->d_name,".."))
+    //     {
+    //         continue;
+    //     }
+
+    //     printf("%s%s  %s%s\n",
+    //             getColor(entry->d_name, entry->d_type),  // color
+    //             getIcon(entry->d_name, entry->d_type),   // icon
+    //             entry->d_name,                           // name
+    //             RESET                                    // reset
+    //     );
+    // }
+
