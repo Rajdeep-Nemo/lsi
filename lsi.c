@@ -68,13 +68,16 @@ char *getIcon(char *name) {
     if (!strcmp(ext, ".gz"))          return "";
     if (!strcmp(ext, ".tar"))         return "";
 
-    // Binaries
-    if (!strcmp(ext, ".exe"))         return "";
-    if (!strcmp(ext, ".bin"))         return "";
-    if (!strcmp(ext, ".out"))         return "";
-    if (!strcmp(ext, ".so"))          return "";
-    if (!strcmp(ext, ".dll"))         return "";
-    if (!strcmp(ext, ".a"))           return "";
+    // Binaries (Done)
+    if (!strcmp(ext, ".exe"))         return "";
+    if (!strcmp(ext, ".bin"))         return "";
+    if (!strcmp(ext, ".out"))         return "";
+    if (!strcmp(ext, ".so"))          return "";
+    if (!strcmp(ext, ".dll"))         return "";
+    if (!strcmp(ext, ".a"))           return "";
+
+    // Extra (Done)
+    if (!strcmp(ext, ".desktop"))     return "";
 
     // Unknown
     return "";
