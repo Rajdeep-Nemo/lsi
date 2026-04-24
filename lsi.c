@@ -3,73 +3,57 @@
 #include <string.h>
 
 char *getIcon(char *name) {
-
-    // Special filenames (no extension)
-    if (!strcmp(name, "Makefile"))    return "";
-    if (!strcmp(name, "Dockerfile"))  return "";
-    if (!strcmp(name, ".git"))  return "";
-    if (!strcmp(name, ".gitignore"))  return "";
-
-    // Compound extensions first
+    // Compound extensions first (Done)
     if (strstr(name, ".tar."))        return "";
 
-    // Get extension for rest
+    // Get extension for rest (Done)
     char *ext = strrchr(name, '.');
-    if (ext == NULL) return "";
+    if (ext == NULL) return "";
 
-    // Code / Programming languages
-    if (!strcmp(ext, ".c"))           return "󰙱";
-    if (!strcmp(ext, ".h"))           return "󰰀";
-    if (!strcmp(ext, ".cpp"))         return "󰙲";
-    if (!strcmp(ext, ".hpp"))         return "󰰀󰰘󰰘";
-    if (!strcmp(ext, ".py"))          return "󰌠";
-    if (!strcmp(ext, ".js"))          return "";
-    if (!strcmp(ext, ".ts"))          return "";
-    if (!strcmp(ext, ".html"))        return "";
-    if (!strcmp(ext, ".css"))         return "";
-    if (!strcmp(ext, ".java"))        return "";
-    if (!strcmp(ext, ".rs"))          return "";
-    if (!strcmp(ext, ".go"))          return "󰟓";
-    if (!strcmp(ext, ".rb"))          return "";
-    if (!strcmp(ext, ".php"))         return "";
+    // Code / Programming languages (Done)
+    if (!strcmp(ext, ".c"))           return "";
+    if (!strcmp(ext, ".h"))           return "";
+    if (!strcmp(ext, ".cpp"))         return "";
+    if (!strcmp(ext, ".hpp"))         return "";
+    if (!strcmp(ext, ".py"))          return "";
+    if (!strcmp(ext, ".js"))          return "";
+    if (!strcmp(ext, ".ts"))          return "";
+    if (!strcmp(ext, ".html"))        return "";
+    if (!strcmp(ext, ".css"))         return "";
+    if (!strcmp(ext, ".java"))        return "";
+    if (!strcmp(ext, ".rs"))          return "";
+    if (!strcmp(ext, ".go"))          return "";
+    if (!strcmp(ext, ".rb"))          return "";
+    if (!strcmp(ext, ".php"))         return "";
 
-    // Shell / Config
+    // Shell / Config (Done)
     if (!strcmp(ext, ".sh"))          return "";
     if (!strcmp(ext, ".bash"))        return "";
     if (!strcmp(ext, ".zsh"))         return "";
-    if (!strcmp(ext, ".json"))        return "";
-    if (!strcmp(ext, ".yaml"))        return "";
-    if (!strcmp(ext, ".yml"))         return "";
-    if (!strcmp(ext, ".toml"))        return "";
-    if (!strcmp(ext, ".env"))         return "";
-    if (!strcmp(ext, ".ini"))         return "";
-    if (!strcmp(ext, ".cfg"))         return "";
 
-    // Documents
-    if (!strcmp(ext, ".txt"))         return "";
-    if (!strcmp(ext, ".md"))          return "";
-    if (!strcmp(ext, ".pdf"))         return "";
-    if (!strcmp(ext, ".docx"))        return "";
-    if (!strcmp(ext, ".doc"))         return "";
-    if (!strcmp(ext, ".xlsx"))        return "";
-    if (!strcmp(ext, ".xls"))         return "";
-    if (!strcmp(ext, ".pptx"))        return "";
-    if (!strcmp(ext, ".ppt"))         return "";
-    if (!strcmp(ext, ".csv"))         return "";
+    // Documents (Done)
+    if (!strcmp(ext, ".txt"))         return "";
+    if (!strcmp(ext, ".md"))          return "";
+    if (!strcmp(ext, ".docx"))        return "󰧮";
+    if (!strcmp(ext, ".doc"))         return "󰧮";
+    if (!strcmp(ext, ".xlsx"))        return "󰧷";
+    if (!strcmp(ext, ".xls"))         return "󰧷";
+    if (!strcmp(ext, ".pptx"))        return "󰐩";
+    if (!strcmp(ext, ".ppt"))         return "󰐩";
 
-    // Images
-    if (!strcmp(ext, ".png"))         return "";
-    if (!strcmp(ext, ".jpg"))         return "";
-    if (!strcmp(ext, ".jpeg"))        return "";
-    if (!strcmp(ext, ".gif"))         return "";
-    if (!strcmp(ext, ".svg"))         return "";
-    if (!strcmp(ext, ".webp"))        return "";
+    // Images (Done)
+    if (!strcmp(ext, ".png"))         return "";
+    if (!strcmp(ext, ".jpg"))         return "";
+    if (!strcmp(ext, ".jpeg"))        return "";
+    if (!strcmp(ext, ".gif"))         return "";
+    if (!strcmp(ext, ".svg"))         return "";
+    if (!strcmp(ext, ".webp"))        return "";
 
-    // Video
-    if (!strcmp(ext, ".mp4"))         return "";
-    if (!strcmp(ext, ".mkv"))         return "";
-    if (!strcmp(ext, ".avi"))         return "";
-    if (!strcmp(ext, ".mov"))         return "";
+    // Video (Done)
+    if (!strcmp(ext, ".mp4"))         return "";
+    if (!strcmp(ext, ".mkv"))         return "";
+    if (!strcmp(ext, ".avi"))         return "";
+    if (!strcmp(ext, ".mov"))         return "";
 
     // Audio
     if (!strcmp(ext, ".mp3"))         return "";
@@ -77,7 +61,7 @@ char *getIcon(char *name) {
     if (!strcmp(ext, ".flac"))        return "";
     if (!strcmp(ext, ".ogg"))         return "";
 
-    // Archives
+    // Archives (Done)
     if (!strcmp(ext, ".zip"))         return "";
     if (!strcmp(ext, ".rar"))         return "";
     if (!strcmp(ext, ".7z"))          return "";
@@ -93,7 +77,7 @@ char *getIcon(char *name) {
     if (!strcmp(ext, ".a"))           return "";
 
     // Unknown
-    return "";
+    return "";
 }
 
 int main(void){
