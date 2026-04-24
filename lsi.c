@@ -89,80 +89,82 @@ char *getIcon (char *name , unsigned char type) {
 }
 char *getColor (char *name , unsigned char type) {
     // Dierctory
-    if (type == DT_DIR) return BRIGHT_BLUE;
+    if (type == DT_DIR) return BLUE;
 
     // Compound extensions first (Done)
-    if (strstr(name, ".tar."))        return RED;
+    if (strstr(name, ".tar."))        return CORAL;
 
     // Get extension for rest (Done)
     char *ext = strrchr(name, '.');
     if (ext == NULL) return RESET;
 
     // Code / Programming languages (Done)
-    if (!strcmp(ext, ".c"))           return BRIGHT_GREEN;
-    if (!strcmp(ext, ".h"))           return BRIGHT_GREEN;
-    if (!strcmp(ext, ".cpp"))         return BRIGHT_GREEN;
-    if (!strcmp(ext, ".hpp"))         return BRIGHT_GREEN;
-    if (!strcmp(ext, ".py"))          return BRIGHT_GREEN;
-    if (!strcmp(ext, ".js"))          return BRIGHT_GREEN;
-    if (!strcmp(ext, ".ts"))          return BRIGHT_GREEN;
-    if (!strcmp(ext, ".html"))        return BRIGHT_GREEN;
-    if (!strcmp(ext, ".css"))         return BRIGHT_GREEN;
-    if (!strcmp(ext, ".java"))        return BRIGHT_GREEN;
-    if (!strcmp(ext, ".rs"))          return BRIGHT_GREEN;
-    if (!strcmp(ext, ".go"))          return BRIGHT_GREEN;
-    if (!strcmp(ext, ".rb"))          return BRIGHT_GREEN;
-    if (!strcmp(ext, ".php"))         return BRIGHT_GREEN;
+    if (!strcmp(ext, ".c"))           return MINT;
+    if (!strcmp(ext, ".h"))           return MINT;
+    if (!strcmp(ext, ".cpp"))         return MINT;
+    if (!strcmp(ext, ".hpp"))         return MINT;
+    if (!strcmp(ext, ".py"))          return MINT;
+    if (!strcmp(ext, ".js"))          return MINT;
+    if (!strcmp(ext, ".ts"))          return MINT;
+    if (!strcmp(ext, ".html"))        return MINT;
+    if (!strcmp(ext, ".css"))         return MINT;
+    if (!strcmp(ext, ".java"))        return MINT;
+    if (!strcmp(ext, ".rs"))          return MINT;
+    if (!strcmp(ext, ".go"))          return MINT;
+    if (!strcmp(ext, ".rb"))          return MINT;
+    if (!strcmp(ext, ".php"))         return MINT;
 
     // Shell / Config (Done)
-    if (!strcmp(ext, ".sh"))          return BRIGHT_YELLOW;
-    if (!strcmp(ext, ".bash"))        return BRIGHT_YELLOW;
-    if (!strcmp(ext, ".zsh"))         return BRIGHT_YELLOW;
+    if (!strcmp(ext, ".sh"))          return ORANGE;
+    if (!strcmp(ext, ".bash"))        return ORANGE;
+    if (!strcmp(ext, ".zsh"))         return ORANGE;
 
     // Documents (Done)
-    if (!strcmp(ext, ".txt"))         return BRIGHT_WHITE;
-    if (!strcmp(ext, ".md"))          return BRIGHT_WHITE;
-    if (!strcmp(ext, ".docx"))        return BRIGHT_WHITE;
-    if (!strcmp(ext, ".doc"))         return BRIGHT_WHITE;
-    if (!strcmp(ext, ".xlsx"))        return BRIGHT_WHITE;
-    if (!strcmp(ext, ".xls"))         return BRIGHT_WHITE;
-    if (!strcmp(ext, ".pptx"))        return BRIGHT_WHITE;
-    if (!strcmp(ext, ".ppt"))         return BRIGHT_WHITE;
+    if (!strcmp(ext, ".txt"))         return ICE;
+    if (!strcmp(ext, ".md"))          return ICE;
+    if (!strcmp(ext, ".docx"))        return ICE;
+    if (!strcmp(ext, ".doc"))         return ICE;
+    if (!strcmp(ext, ".xlsx"))        return ICE;
+    if (!strcmp(ext, ".xls"))         return ICE;
+    if (!strcmp(ext, ".pptx"))        return ICE;
+    if (!strcmp(ext, ".ppt"))         return ICE;
+    if (!strcmp(ext, ".pdf"))         return ICE;
 
     // Images (Done)
-    if (!strcmp(ext, ".png"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".jpg"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".jpeg"))        return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".gif"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".svg"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".webp"))        return BRIGHT_MAGENTA;
+    if (!strcmp(ext, ".png"))         return MAGENTA;
+    if (!strcmp(ext, ".jpg"))         return MAGENTA;
+    if (!strcmp(ext, ".jpeg"))        return MAGENTA;
+    if (!strcmp(ext, ".gif"))         return MAGENTA;
+    if (!strcmp(ext, ".svg"))         return MAGENTA;
+    if (!strcmp(ext, ".webp"))        return MAGENTA;
 
     // Video (Done)
-    if (!strcmp(ext, ".mp4"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".mkv"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".avi"))         return BRIGHT_MAGENTA;
-    if (!strcmp(ext, ".mov"))         return BRIGHT_MAGENTA;
+    if (!strcmp(ext, ".mp4"))         return PURPLE;
+    if (!strcmp(ext, ".mkv"))         return PURPLE;
+    if (!strcmp(ext, ".avi"))         return PURPLE;
+    if (!strcmp(ext, ".mov"))         return PURPLE;
 
     // Audio (Done)
-    if (!strcmp(ext, ".mp3"))         return BRIGHT_CYAN;
-    if (!strcmp(ext, ".wav"))         return BRIGHT_CYAN;
-    if (!strcmp(ext, ".flac"))        return BRIGHT_CYAN;
-    if (!strcmp(ext, ".ogg"))         return BRIGHT_CYAN;
+    if (!strcmp(ext, ".mp3"))         return PINK;
+    if (!strcmp(ext, ".wav"))         return PINK;
+    if (!strcmp(ext, ".flac"))        return PINK;
+    if (!strcmp(ext, ".ogg"))         return PINK;
 
     // Archives (Done)
-    if (!strcmp(ext, ".zip"))         return RED;
-    if (!strcmp(ext, ".rar"))         return RED;
-    if (!strcmp(ext, ".7z"))          return RED;
-    if (!strcmp(ext, ".gz"))          return RED;
-    if (!strcmp(ext, ".tar"))         return RED;
+    if (!strcmp(ext, ".zip"))         return CORAL;
+    if (!strcmp(ext, ".rar"))         return CORAL;
+    if (!strcmp(ext, ".7z"))          return CORAL;
+    if (!strcmp(ext, ".gz"))          return CORAL;
+    if (!strcmp(ext, ".tar"))         return CORAL;
 
     // Binaries (Done)
-    if (!strcmp(ext, ".exe"))         return BRIGHT_RED;
-    if (!strcmp(ext, ".bin"))         return BRIGHT_RED;
-    if (!strcmp(ext, ".out"))         return BRIGHT_RED;
-    if (!strcmp(ext, ".so"))          return BRIGHT_RED;
-    if (!strcmp(ext, ".dll"))         return BRIGHT_RED;
-    if (!strcmp(ext, ".a"))           return BRIGHT_RED;
+    if (!strcmp(ext, ".exe"))         return CRIMSON;
+    if (!strcmp(ext, ".bin"))         return CRIMSON;
+    if (!strcmp(ext, ".out"))         return CRIMSON;
+    if (!strcmp(ext, ".so"))          return CRIMSON;
+    if (!strcmp(ext, ".dll"))         return CRIMSON;
+    if (!strcmp(ext, ".a"))           return CRIMSON;
+    if (!strcmp(ext, ".rpm"))         return CRIMSON;
 
     // Extra (Done)
     if (!strcmp(ext, ".desktop"))     return WHITE;
