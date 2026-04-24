@@ -55,11 +55,11 @@ char *getIcon(char *name) {
     if (!strcmp(ext, ".avi"))         return "";
     if (!strcmp(ext, ".mov"))         return "";
 
-    // Audio
-    if (!strcmp(ext, ".mp3"))         return "";
-    if (!strcmp(ext, ".wav"))         return "";
-    if (!strcmp(ext, ".flac"))        return "";
-    if (!strcmp(ext, ".ogg"))         return "";
+    // Audio (Done)
+    if (!strcmp(ext, ".mp3"))         return "";
+    if (!strcmp(ext, ".wav"))         return "";
+    if (!strcmp(ext, ".flac"))        return "";
+    if (!strcmp(ext, ".ogg"))         return "";
 
     // Archives (Done)
     if (!strcmp(ext, ".zip"))         return "";
