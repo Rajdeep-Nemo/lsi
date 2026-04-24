@@ -1,8 +1,12 @@
+#define _DEFAULT_SOURCE
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
 
-char *getIcon(char *name) {
+char *getIcon(char *name , unsigned char type) {
+    // Dierctory
+    if (type == DT_DIR) return "";
+
     // Compound extensions first (Done)
     if (strstr(name, ".tar."))        return "";
 
@@ -93,19 +97,7 @@ int main(void){
         {
             continue;
         }
-
-        if (entry->d_type == 8) // Regular file
-        {
-            printf(" %s %s\n",getIcon(entry->d_name),entry->d_name);
-        }
-        else if (entry->d_type == 4) // Dierctory
-        {
-            printf("  %s\n",entry->d_name);
-        }
-        else
-        {
-            printf(" ? %s\n",entry->d_name);
-        }
+        printf("%s  %s\n", getIcon(entry->d_name, entry->d_type), entry->d_name);
     }
 
     closedir(currentDir);
