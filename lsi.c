@@ -19,20 +19,20 @@ char *getIcon (char *name , unsigned char type) {
     if (ext == NULL) return "";
 
     // Code / Programming languages (Done)
-    if (!strcmp(ext, ".c"))           return "";
-    if (!strcmp(ext, ".h"))           return "";
-    if (!strcmp(ext, ".cpp"))         return "";
-    if (!strcmp(ext, ".hpp"))         return "";
-    if (!strcmp(ext, ".py"))          return "";
-    if (!strcmp(ext, ".js"))          return "";
-    if (!strcmp(ext, ".ts"))          return "";
-    if (!strcmp(ext, ".html"))        return "";
-    if (!strcmp(ext, ".css"))         return "";
-    if (!strcmp(ext, ".java"))        return "";
-    if (!strcmp(ext, ".rs"))          return "";
-    if (!strcmp(ext, ".go"))          return "";
-    if (!strcmp(ext, ".rb"))          return "";
-    if (!strcmp(ext, ".php"))         return "";
+    if (!strcmp(ext, ".c"))           return "";
+    if (!strcmp(ext, ".h"))           return "";
+    if (!strcmp(ext, ".cpp"))         return "";
+    if (!strcmp(ext, ".hpp"))         return "";
+    if (!strcmp(ext, ".py"))          return "";
+    if (!strcmp(ext, ".js"))          return "";
+    if (!strcmp(ext, ".ts"))          return "";
+    if (!strcmp(ext, ".html"))        return "";
+    if (!strcmp(ext, ".css"))         return "";
+    if (!strcmp(ext, ".java"))        return "";
+    if (!strcmp(ext, ".rs"))          return "";
+    if (!strcmp(ext, ".go"))          return "";
+    if (!strcmp(ext, ".rb"))          return "";
+    if (!strcmp(ext, ".php"))         return "";
 
     // Shell / Config (Done)
     if (!strcmp(ext, ".sh"))          return "";
@@ -234,20 +234,32 @@ int main(void){
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     int term_width = w.ws_col;
 
-    int col_width = max_len + 6; // 2 icon + 2 padding + 2 extra breathing room
+    int col_width = max_len + 6; // 2 icon + 2 padding + 2 extra
     int num_cols = term_width / col_width;
     if (num_cols == 0) num_cols = 1;
 
     for (int i = 0; i < count; i++)
     {
-
         char *icon = getIcon(entries[i].name, entries[i].type);
         char *name = entries[i].name;
-        int name_len = strlen(name);
-        int icon_len = visual_len(icon);
-        int padding = col_width - name_len - icon_len - 2; // 1 for space between icon and name
 
-        printf("%s%s  %s%s", getColor(entries[i].name, entries[i].type), icon, name, RESET);
+        char *display_name;
+        char quoted[258];
+        if (strchr(name, ' ') != NULL)
+        {
+            snprintf(quoted, sizeof(quoted), "'%s'", name);
+            display_name = quoted;
+        }
+        else
+        {
+            display_name = name;
+        }
+
+        int name_len = strlen(display_name);
+        int icon_len = visual_len(icon);
+        int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
+
+        printf("%s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
         for (int p = 0; p < padding; p++)
         {
             printf(" ");
