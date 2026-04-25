@@ -3,6 +3,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include "colors.h"
 
@@ -196,18 +197,58 @@ typedef struct
 } Entry;
 
 int main(int argc, char *argv[]){
+    char *path = ".";
     // Flag variables
     int show_hidden = 0;
-
+    // Flag validation loop
     for (int i = 1; i < argc; i++)
     {
+        // Help menu
+        if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
+        {
+            printf("\n");
+            printf("Usage: lsi [flags]\n");
+            printf("\n");
+            printf("Flags:\n");
+            printf("  -a        Show hidden files\n");
+            printf("  -l        Detailed view\n");
+            printf("  -h        Show this help menu\n");
+            printf("\n");
+            return 0;
+        }
+
+        // Flag to show hidden files and folders
         if (!strcmp(argv[i], "-a") || !strcmp(argv[i], "-A"))
         {
             show_hidden = 1;
         }
+        // Checks if argument is a path
+        else if (argv[i][0] != '-')
+        {
+            path = argv[i];
+        }
+        // Invalid flag
+        else
+        {
+            printf("lsi: unknown flag '%s'\n", argv[i]);
+            printf("Try 'lsi -h' for more information.\n");
+            return 1;
+        }
     }
 
-    DIR * currentDir = opendir(".");
+    struct stat s;
+    if (stat(path, &s) == -1)
+    {
+        printf("lsi: cannot access '%s': No such file or directory\n", path);
+        return 1;
+    }
+    else if (S_ISREG(s.st_mode))
+    {
+        printf("%s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
+        return 0;
+    }
+
+    DIR *currentDir = opendir(path);
 
     struct dirent *entry;
     Entry entries[1024];
