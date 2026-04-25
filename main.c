@@ -4,6 +4,7 @@
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include "colors.h"
 #include "style.h"
@@ -20,6 +21,9 @@ int main(int argc, char *argv[]){
     char *path = ".";
     // Flag variables
     int show_hidden = 0;
+    int sort_by = SORT_NAME;
+    int reverse = 0;
+    int show_detailed = 0;
     // Flag validation loop
     for (int i = 1; i < argc; i++)
     {
@@ -31,28 +35,47 @@ int main(int argc, char *argv[]){
             printf("\n");
             printf("Flags:\n");
             printf("  -a        Show hidden files\n");
+            printf("  -r        Reverse sort order\n");
+            printf("  -s        Sort by file size\n");
+            printf("  -t        Sort by date modified\n");
             printf("  -l        Detailed view\n");
             printf("  -h        Show this help menu\n");
             printf("\n");
             return 0;
         }
-
-        // Flag to show hidden files and folders
-        if (!strcmp(argv[i], "-a") || !strcmp(argv[i], "-A"))
-        {
-            show_hidden = 1;
-        }
         // Checks if argument is a path
-        else if (argv[i][0] != '-')
+        if (argv[i][0] != '-')
         {
             path = argv[i];
         }
-        // Invalid flag
-        else
+        else if (argv[i][0] == '-')
         {
-            printf("lsi: unknown flag '%s'\n", argv[i]);
-            printf("Try 'lsi -h' for more information.\n");
-            return 1;
+            char *flag = argv[i] + 1; // skip the '-'
+            for (int j = 0; flag[j] != '\0'; j++)
+            {
+                // Hidden files and folder
+                if (flag[j] == 'a')
+                    show_hidden = 1;
+                // reverse sort
+                else if (flag[j] == 'r')
+                    reverse = 1;
+                // By size
+                else if (flag[j] == 's')
+                    sort_by = SORT_SIZE;
+                // By date modified
+                else if (flag[j] == 't')
+                    sort_by = SORT_TIME;
+                // Detailed view
+                else if (flag[j] == 'l')
+                    show_detailed = 1;
+                // Invalid
+                else
+                {
+                    printf("lsi: unknown flag '-%c'\n", flag[j]);
+                    printf("Try 'lsi -help' for more information.\n");
+                    return 1;
+                }
+            }
         }
     }
 
@@ -88,10 +111,14 @@ int main(int argc, char *argv[]){
         
         strcpy(entries[count].name , entry->d_name);
         entries[count].type = entry->d_type;
+        struct stat s;
+        stat(entry->d_name, &s);
+        entries[count].size = s.st_size;
+        entries[count].mtime = s.st_mtime;
         count += 1;
     }
 
-    sort_entries(entries, count);
+    sort_entries(entries, count, sort_by, reverse);
 
     // Find the element with the longest name
     int max_len = 0;
