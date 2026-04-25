@@ -87,7 +87,7 @@ int main(int argc, char *argv[]){
     }
     else if (S_ISREG(s.st_mode))
     {
-        printf("%s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
+        printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
         return 0;
     }
 
@@ -160,7 +160,7 @@ int main(int argc, char *argv[]){
         int icon_len = visual_len(icon);
         int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
-        printf("%s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
+        printf(" %s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
         for (int p = 0; p < padding; p++)
         {
             printf(" ");
