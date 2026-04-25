@@ -195,7 +195,18 @@ typedef struct
     unsigned char type;
 } Entry;
 
-int main(void){
+int main(int argc, char *argv[]){
+    // Flag variables
+    int show_hidden = 0;
+
+    for (int i = 1; i < argc; i++)
+    {
+        if (!strcmp(argv[i], "-a") || !strcmp(argv[i], "-A"))
+        {
+            show_hidden = 1;
+        }
+    }
+
     DIR * currentDir = opendir(".");
 
     struct dirent *entry;
@@ -209,7 +220,7 @@ int main(void){
         {
             continue;
         }
-        if (entry->d_name[0] == '.')
+        if (entry->d_name[0] == '.' && !show_hidden)
         {
             continue;
         }
