@@ -1,5 +1,5 @@
 CC = gcc
-SRC = main.c style.c
+SRC = main.c style.c sort.c
 TARGET = lsi
 
 install:
