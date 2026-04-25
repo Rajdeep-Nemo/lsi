@@ -1,3 +1,10 @@
+CC = gcc
+SRC = main.c style.c
+TARGET = lsi
+
 install:
-	gcc lsi.c -o lsi
-	sudo mv lsi /usr/local/bin/lsi
+	$(CC) $(SRC) -o $(TARGET)
+	sudo mv $(TARGET) /usr/local/bin/$(TARGET)
+
+remove:
+	sudo rm -f /usr/local/bin/$(TARGET)
