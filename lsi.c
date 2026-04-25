@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include "colors.h"
 
 // Selects the appropriate icon 
@@ -84,10 +86,13 @@ char *getIcon (char *name , unsigned char type) {
 
     // Extra (Done)
     if (!strcmp(ext, ".desktop"))     return "";
+    if (!strcmp(ext, ".ttf"))         return "󰛖";
+    if (!strcmp(ext, ".otf"))         return "󰛖";
 
     // Unknown
     return "";
 }
+
 // Selects the appropriate color
 char *getColor (char *name , unsigned char type) {
     // Dierctory
@@ -170,9 +175,17 @@ char *getColor (char *name , unsigned char type) {
 
     // Extra (Done)
     if (!strcmp(ext, ".desktop"))     return WHITE;
+    if (!strcmp(ext, ".ttf"))         return WHITE;
+    if (!strcmp(ext, ".otf"))         return WHITE;
 
     // Unknown
     return RESET;
+}
+
+// Visual length for each icon is fixed 2
+int visual_len(char *icon)
+{
+    return 2;
 }
 
 // Stores each item in a directory
@@ -196,29 +209,55 @@ int main(void){
         {
             continue;
         }
-
+        if (entry->d_name[0] == '.')
+        {
+            continue;
+        }
+        
         strcpy(entries[count].name , entry->d_name);
         entries[count].type = entry->d_type;
         count += 1;
     }
 
+    // Find the element with the longest name
+    int max_len = 0;
+    for (int i = 0; i < count; i++)
+    {
+        int len = strlen(entries[i].name);
+        if (len > max_len)
+        {
+            max_len = len;
+        }
+    }
+    
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    int term_width = w.ws_col;
 
+    int col_width = max_len + 6; // 2 icon + 2 padding + 2 extra breathing room
+    int num_cols = term_width / col_width;
+    if (num_cols == 0) num_cols = 1;
 
+    for (int i = 0; i < count; i++)
+    {
+
+        char *icon = getIcon(entries[i].name, entries[i].type);
+        char *name = entries[i].name;
+        int name_len = strlen(name);
+        int icon_len = visual_len(icon);
+        int padding = col_width - name_len - icon_len - 2; // 1 for space between icon and name
+
+        printf("%s%s  %s%s", getColor(entries[i].name, entries[i].type), icon, name, RESET);
+        for (int p = 0; p < padding; p++)
+        {
+            printf(" ");
+        }
+
+        if ((i + 1) % num_cols == 0) printf("\n");
+    }
+    if (count % num_cols != 0)
+    {
+       printf("\n");
+    }
     closedir(currentDir);
 }
-
-    // while((entry = readdir(currentDir)) != NULL){
-
-    //     if (!strcmp(entry->d_name,".") || !strcmp(entry->d_name,".."))
-    //     {
-    //         continue;
-    //     }
-
-    //     printf("%s%s  %s%s\n",
-    //             getColor(entry->d_name, entry->d_type),  // color
-    //             getIcon(entry->d_name, entry->d_type),   // icon
-    //             entry->d_name,                           // name
-    //             RESET                                    // reset
-    //     );
-    // }
-
