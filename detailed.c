@@ -79,10 +79,10 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
     }
     for (int i = 0; i < count; i++) {
         char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
-        char *col = config.color ? getColor(entries[i].name, entries[i].type) : "";
-        char *size = entries[i].type == DT_DIR ? "-" 
-                        : (config.color ? format_size_colored(entries[i].size)
-                        : format_size(entries[i].size));
+        char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
+        char *size = entries[i].type == DT_DIR ? "-"
+                                               : (config.color ? format_size_colored(entries[i].size)
+                                                               : format_size(entries[i].size));
 
         int plain_len = entries[i].type == DT_DIR ? 1 : strlen(format_size(entries[i].size));
         int size_padding = max_size_len - plain_len;
@@ -92,7 +92,7 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
         int name_len = strlen(entries[i].name);
         int padding = max_len - name_len;
 
-        printf(" %s%s %s%s", col, icon, entries[i].name, RESET);
+        printf(" %s%s %s%s", color, icon, entries[i].name, RESET);
         for (int j = 0; j < padding; j++) {
             printf(" ");
         }
