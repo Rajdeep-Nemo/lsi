@@ -1,5 +1,6 @@
 #define _DEFAULT_SOURCE
 #include "colors.h"
+#include "detailed.h"
 #include "entry.h"
 #include "sort.h"
 #include "style.h"
@@ -26,8 +27,7 @@ int main(int argc, char *argv[]) {
     // Flag validation loop
     for (int i = 1; i < argc; i++) {
         // Help menu
-        if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") ||
-            !strcmp(argv[i], "-h")) {
+        if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
             printf("\n");
             printf("Usage: lsi [flags]\n");
             printf("\n");
@@ -77,8 +77,7 @@ int main(int argc, char *argv[]) {
         printf("lsi: cannot access '%s': No such file or directory\n", path);
         return 1;
     } else if (S_ISREG(s.st_mode)) {
-        printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG),
-               path, RESET);
+        printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
         return 0;
     }
 
@@ -103,6 +102,7 @@ int main(int argc, char *argv[]) {
         stat(entry->d_name, &s);
         entries[count].size = s.st_size;
         entries[count].mtime = s.st_mtime;
+        entries[count].mode = s.st_mode;
         count += 1;
     }
 
@@ -117,43 +117,49 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    int term_width = w.ws_col;
+    if (show_detailed) {
+        print_detailed(entries, count, max_len);
+    } else {
 
-    int col_width = max_len + 6; // 2 icon + 2 padding + 2 extra
-    int num_cols = term_width / col_width;
-    if (num_cols == 0)
-        num_cols = 1;
+        struct winsize w;
+        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        int term_width = w.ws_col;
 
-    for (int i = 0; i < count; i++) {
-        char *icon = getIcon(entries[i].name, entries[i].type);
-        char *name = entries[i].name;
+        int col_width = max_len + 6; // 2 icon + 2 padding + 2 extra
+        int num_cols = term_width / col_width;
+        if (num_cols == 0)
+            num_cols = 1;
 
-        char *display_name;
-        char quoted[258];
-        if (strchr(name, ' ') != NULL) {
-            snprintf(quoted, sizeof(quoted), "'%s'", name);
-            display_name = quoted;
-        } else {
-            display_name = name;
+        for (int i = 0; i < count; i++) {
+            char *icon = getIcon(entries[i].name, entries[i].type);
+            char *name = entries[i].name;
+
+            char *display_name;
+            char quoted[258];
+            if (strchr(name, ' ') != NULL) {
+                snprintf(quoted, sizeof(quoted), "'%s'", name);
+                display_name = quoted;
+            } else {
+                display_name = name;
+            }
+
+            int name_len = strlen(display_name);
+            int icon_len = visual_len(icon);
+            int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
+
+            printf(" %s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
+            for (int p = 0; p < padding; p++) {
+                printf(" ");
+            }
+
+            if ((i + 1) % num_cols == 0) {
+                printf("\n");
+            }
         }
-
-        int name_len = strlen(display_name);
-        int icon_len = visual_len(icon);
-        int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
-
-        printf(" %s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
-        for (int p = 0; p < padding; p++) {
-            printf(" ");
-        }
-
-        if ((i + 1) % num_cols == 0) {
+        if (count % num_cols != 0) {
             printf("\n");
         }
     }
-    if (count % num_cols != 0) {
-        printf("\n");
-    }
+
     closedir(currentDir);
 }

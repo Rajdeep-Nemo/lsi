@@ -10,6 +10,7 @@ typedef struct
     unsigned char type;
     off_t size;
     time_t mtime;
+    mode_t mode;
 } Entry;
 
 #endif
