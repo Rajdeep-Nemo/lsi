@@ -113,8 +113,12 @@ int main(int argc, char *argv[]) {
 
         strcpy(entries[count].name, entry->d_name);
         entries[count].type = entry->d_type;
+        // struct stat s;
+        // stat(entry->d_name, &s);
+        char full_path[1024];
+        snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
         struct stat s;
-        stat(entry->d_name, &s);
+        stat(full_path, &s);
         entries[count].size = s.st_size;
         entries[count].mtime = s.st_mtime;
         entries[count].mode = s.st_mode;
@@ -136,10 +140,19 @@ int main(int argc, char *argv[]) {
         print_detailed(entries, count, max_len);
     } else if (one_per_line) {
         for (int i = 0; i < count; i++) {
+            char *name = entries[i].name;
+            char *display_name;
+            char quoted[258];
+            if (strchr(name, ' ') != NULL) {
+                snprintf(quoted, sizeof(quoted), "'%s'", name);
+                display_name = quoted;
+            } else {
+                display_name = name;
+            }
             printf("%s%s %s%s\n",
                    getColor(entries[i].name, entries[i].type),
                    getIcon(entries[i].name, entries[i].type),
-                   entries[i].name,
+                   display_name,
                    RESET);
         }
     } else {
