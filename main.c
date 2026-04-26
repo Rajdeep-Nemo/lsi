@@ -21,8 +21,6 @@ int visual_len(char *icon) {
 int main(int argc, char *argv[]) {
     // Config (~/.config/lsi/lsi.conf)
     Config config = load_config();
-    int config_icons = config.icons;
-    int config_color = config.color;
     // Default path is the same directory the command is being called from
     char *path = ".";
     // Flag variables
@@ -51,10 +49,8 @@ int main(int argc, char *argv[]) {
             printf("\n");
             return 0;
         } else if (!strcmp(argv[i], "--no-icons")) {
-            config_icons = 0;
             config.icons = 0;
         } else if (!strcmp(argv[i], "--no-color")) {
-            config_color = 0;
             config.color = 0;
         }
         // Configuration flag for icons
@@ -129,9 +125,9 @@ int main(int argc, char *argv[]) {
             e.mode = s.st_mode;
             print_detailed(&e, 1, strlen(path), config);
         } else {
-            char *icon = config_icons ? getIcon(path, DT_REG) : "";
-            char *color = config_color ? getColor(path, DT_REG) : "";
-            if (config_icons)
+            char *icon = config.icons ? getIcon(path, DT_REG) : "";
+            char *color = config.color ? getColor(path, DT_REG) : "";
+            if (config.icons)
                 printf("%s%s %s%s", color, icon, path, RESET);
             else
                 printf("%s%s%s", color, path, RESET);
@@ -190,9 +186,9 @@ int main(int argc, char *argv[]) {
             } else {
                 display_name = name;
             }
-            char *icon = config_icons ? getIcon(entries[i].name, entries[i].type) : "";
-            char *color = config_color ? getColor(entries[i].name, entries[i].type) : "";
-            if (config_icons)
+            char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
+            char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
+            if (config.icons)
                 printf("%s%s %s%s\n", color, icon, display_name, RESET);
             else
                 printf("%s%s%s\n", color, display_name, RESET);
@@ -208,8 +204,8 @@ int main(int argc, char *argv[]) {
             num_cols = 1;
 
         for (int i = 0; i < count; i++) {
-            char *icon = config_icons ? getIcon(entries[i].name, entries[i].type) : "";
-            char *color = config_color ? getColor(entries[i].name, entries[i].type) : "";
+            char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
+            char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
             char *name = entries[i].name;
 
             char *display_name;
@@ -225,8 +221,7 @@ int main(int argc, char *argv[]) {
             int icon_len = visual_len(icon);
             int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
-            // printf("%s%s %s%s", color, icon, display_name, RESET);
-            if (config_icons)
+            if (config.icons)
                 printf("%s%s %s%s", color, icon, display_name, RESET);
             else
                 printf("%s%s%s", color, display_name, RESET);
