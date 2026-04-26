@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
     int sort_by = SORT_NAME;
     int reverse = 0;
     int show_detailed = 0;
+    int one_per_line = 0;
     // Flag validation loop
     for (int i = 1; i < argc; i++) {
         // Help menu
@@ -37,6 +38,7 @@ int main(int argc, char *argv[]) {
             printf("  -s        Sort by file size\n");
             printf("  -t        Sort by date modified\n");
             printf("  -l        Detailed view\n");
+            printf("  -1        One entry per line\n");
             printf("  -h        Show this help menu\n");
             printf("\n");
             return 0;
@@ -62,6 +64,9 @@ int main(int argc, char *argv[]) {
                 // Detailed view
                 else if (flag[j] == 'l')
                     show_detailed = 1;
+                // One entry per line
+                else if (flag[j] == '1')
+                    one_per_line = 1;
                 // Invalid
                 else {
                     printf("lsi: unknown flag '-%c'\n", flag[j]);
@@ -77,7 +82,17 @@ int main(int argc, char *argv[]) {
         printf("lsi: cannot access '%s': No such file or directory\n", path);
         return 1;
     } else if (S_ISREG(s.st_mode)) {
-        printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
+        if (show_detailed) {
+            Entry e;
+            strcpy(e.name, path);
+            e.type = DT_REG;
+            e.size = s.st_size;
+            e.mtime = s.st_mtime;
+            e.mode = s.st_mode;
+            print_detailed(&e, 1, strlen(path));
+        } else {
+            printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
+        }
         return 0;
     }
 
@@ -119,8 +134,15 @@ int main(int argc, char *argv[]) {
 
     if (show_detailed) {
         print_detailed(entries, count, max_len);
+    } else if (one_per_line) {
+        for (int i = 0; i < count; i++) {
+            printf("%s%s %s%s\n",
+                   getColor(entries[i].name, entries[i].type),
+                   getIcon(entries[i].name, entries[i].type),
+                   entries[i].name,
+                   RESET);
+        }
     } else {
-
         struct winsize w;
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
         int term_width = w.ws_col;
