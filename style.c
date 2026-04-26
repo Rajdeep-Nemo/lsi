@@ -5,8 +5,7 @@
 #include <string.h>
 
 // Selects the appropriate icon
-char *getIcon(char *name, unsigned char type)
-{
+char *getIcon(char *name, unsigned char type) {
     // Dierctory
     if (type == DT_DIR)
         return "";
@@ -149,8 +148,7 @@ char *getIcon(char *name, unsigned char type)
 }
 
 // Selects the appropriate color
-char *getColor(char *name, unsigned char type)
-{
+char *getColor(char *name, unsigned char type) {
     // Dierctory
     if (type == DT_DIR)
         return BLUE;

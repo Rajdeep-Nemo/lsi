@@ -9,7 +9,7 @@ typedef struct
     char name[256];
     unsigned char type;
     off_t size;
-    time_t mtime;;
+    time_t mtime;
 } Entry;
 
 #endif

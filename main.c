@@ -1,23 +1,22 @@
 #define _DEFAULT_SOURCE
-#include <stdio.h>
+#include "colors.h"
+#include "entry.h"
+#include "sort.h"
+#include "style.h"
 #include <dirent.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "colors.h"
-#include "style.h"
-#include "entry.h"
-#include "sort.h"
 
 // Visual length for each icon is fixed 2
-int visual_len(char *icon)
-{
+int visual_len(char *icon) {
     return 2;
 }
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
     char *path = ".";
     // Flag variables
     int show_hidden = 0;
@@ -25,11 +24,10 @@ int main(int argc, char *argv[]){
     int reverse = 0;
     int show_detailed = 0;
     // Flag validation loop
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++) {
         // Help menu
-        if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h"))
-        {
+        if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") ||
+            !strcmp(argv[i], "-h")) {
             printf("\n");
             printf("Usage: lsi [flags]\n");
             printf("\n");
@@ -44,15 +42,11 @@ int main(int argc, char *argv[]){
             return 0;
         }
         // Checks if argument is a path
-        if (argv[i][0] != '-')
-        {
+        if (argv[i][0] != '-') {
             path = argv[i];
-        }
-        else if (argv[i][0] == '-')
-        {
+        } else if (argv[i][0] == '-') {
             char *flag = argv[i] + 1; // skip the '-'
-            for (int j = 0; flag[j] != '\0'; j++)
-            {
+            for (int j = 0; flag[j] != '\0'; j++) {
                 // Hidden files and folder
                 if (flag[j] == 'a')
                     show_hidden = 1;
@@ -69,8 +63,7 @@ int main(int argc, char *argv[]){
                 else if (flag[j] == 'l')
                     show_detailed = 1;
                 // Invalid
-                else
-                {
+                else {
                     printf("lsi: unknown flag '-%c'\n", flag[j]);
                     printf("Try 'lsi -help' for more information.\n");
                     return 1;
@@ -80,14 +73,12 @@ int main(int argc, char *argv[]){
     }
 
     struct stat s;
-    if (stat(path, &s) == -1)
-    {
+    if (stat(path, &s) == -1) {
         printf("lsi: cannot access '%s': No such file or directory\n", path);
         return 1;
-    }
-    else if (S_ISREG(s.st_mode))
-    {
-        printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
+    } else if (S_ISREG(s.st_mode)) {
+        printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG),
+               path, RESET);
         return 0;
     }
 
@@ -98,18 +89,15 @@ int main(int argc, char *argv[]){
     int count = 0;
 
     // Loops through all the items and stores them in a struct
-    while ((entry = readdir(currentDir)) != NULL)
-    {
-        if (!strcmp(entry->d_name,".") || !strcmp(entry->d_name,".."))
-        {
+    while ((entry = readdir(currentDir)) != NULL) {
+        if (!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")) {
             continue;
         }
-        if (entry->d_name[0] == '.' && !show_hidden)
-        {
+        if (entry->d_name[0] == '.' && !show_hidden) {
             continue;
         }
-        
-        strcpy(entries[count].name , entry->d_name);
+
+        strcpy(entries[count].name, entry->d_name);
         entries[count].type = entry->d_type;
         struct stat s;
         stat(entry->d_name, &s);
@@ -122,37 +110,32 @@ int main(int argc, char *argv[]){
 
     // Find the element with the longest name
     int max_len = 0;
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         int len = strlen(entries[i].name);
-        if (len > max_len)
-        {
+        if (len > max_len) {
             max_len = len;
         }
     }
-    
+
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
     int term_width = w.ws_col;
 
     int col_width = max_len + 6; // 2 icon + 2 padding + 2 extra
     int num_cols = term_width / col_width;
-    if (num_cols == 0) num_cols = 1;
+    if (num_cols == 0)
+        num_cols = 1;
 
-    for (int i = 0; i < count; i++)
-    {
+    for (int i = 0; i < count; i++) {
         char *icon = getIcon(entries[i].name, entries[i].type);
         char *name = entries[i].name;
 
         char *display_name;
         char quoted[258];
-        if (strchr(name, ' ') != NULL)
-        {
+        if (strchr(name, ' ') != NULL) {
             snprintf(quoted, sizeof(quoted), "'%s'", name);
             display_name = quoted;
-        }
-        else
-        {
+        } else {
             display_name = name;
         }
 
@@ -161,16 +144,16 @@ int main(int argc, char *argv[]){
         int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
         printf(" %s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
-        for (int p = 0; p < padding; p++)
-        {
+        for (int p = 0; p < padding; p++) {
             printf(" ");
         }
 
-        if ((i + 1) % num_cols == 0) printf("\n");
+        if ((i + 1) % num_cols == 0) {
+            printf("\n");
+        }
     }
-    if (count % num_cols != 0)
-    {
-       printf("\n");
+    if (count % num_cols != 0) {
+        printf("\n");
     }
     closedir(currentDir);
 }
