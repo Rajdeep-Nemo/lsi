@@ -1,7 +1,9 @@
+#define _DEFAULT_SOURCE
 #include "detailed.h"
 #include "colors.h"
 #include "entry.h"
 #include "style.h"
+#include <dirent.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -62,7 +64,7 @@ void print_detailed(Entry *entries, int count, int max_len) {
     for (int i = 0; i < count; i++) {
         char *icon = getIcon(entries[i].name, entries[i].type);
         char *color = getColor(entries[i].name, entries[i].type);
-        char *size = format_size(entries[i].size);
+        char *size = entries[i].type == DT_DIR ? "-" : format_size(entries[i].size);
         char *date = format_date(entries[i].mtime);
         char *mode = format_permissions(entries[i].mode);
 
@@ -73,6 +75,6 @@ void print_detailed(Entry *entries, int count, int max_len) {
         for (int j = 0; j < padding; j++) {
             printf(" ");
         }
-        printf("    %*s    %s    %s\n", max_size_len, size, mode, date);
+        printf("    %s    %*s    %s\n", mode, max_size_len, size, date);
     }
 }
