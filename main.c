@@ -19,7 +19,7 @@ int visual_len(char *icon) {
 }
 
 int main(int argc, char *argv[]) {
-    // Config
+    // Config (~/.config/lsi/lsi.conf)
     Config config = load_config();
     int config_icons = config.icons;
     int config_color = config.color;
@@ -39,18 +39,24 @@ int main(int argc, char *argv[]) {
             printf("Usage: lsi [FLAG]... [FILE]...\n");
             printf("\n");
             printf("Flags:\n");
-            printf("  -a        Show hidden files\n");
-            printf("  -r        Reverse sort order\n");
-            printf("  -s        Sort by file size\n");
-            printf("  -t        Sort by date modified\n");
-            printf("  -l        Detailed view\n");
-            printf("  -1        One entry per line\n");
-            printf("  -h        Show this help menu\n");
+            printf("  -a                Show hidden files\n");
+            printf("  -r                Reverse sort order\n");
+            printf("  -s                Sort by file size\n");
+            printf("  -t                Sort by date modified\n");
+            printf("  -l                Detailed view\n");
+            printf("  -1                One entry per line\n");
+            printf("  -h                Show this help menu\n");
+            printf("  --no-icons        Temporarily disable icons\n");
+            printf("  --no-color        Temporarily disable colors\n");
             printf("\n");
             return 0;
+        } else if (!strcmp(argv[i], "--no-icons")) {
+            config_icons = 0;
+        } else if (!strcmp(argv[i], "--no-color")) {
+            config_color = 0;
         }
         // Checks if argument is a path
-        if (argv[i][0] != '-') {
+        else if (argv[i][0] != '-') {
             path = argv[i];
         } else if (argv[i][0] == '-') {
             char *flag = argv[i] + 1; // skip the '-'
