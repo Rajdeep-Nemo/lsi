@@ -92,11 +92,20 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
         int name_len = strlen(entries[i].name);
         int padding = max_len - name_len;
 
+        char *display_name;
+        char quoted[258];
+        if (strchr(entries[i].name, ' ') != NULL) {
+            snprintf(quoted, sizeof(quoted), "'%s'", entries[i].name);
+            display_name = quoted;
+        } else {
+            display_name = entries[i].name;
+        }
+
         if (config.icons)
-            printf("%s%s %s%s", color, icon, entries[i].name, RESET);
+            printf("%s%s %s%s", color, icon, display_name, RESET);
         else
-            printf("%s%s%s", color, entries[i].name, RESET);
-            
+            printf("%s%s%s", color, display_name, RESET);
+
         for (int j = 0; j < padding; j++) {
             printf(" ");
         }
