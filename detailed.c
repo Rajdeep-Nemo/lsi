@@ -10,7 +10,22 @@
 #include <sys/types.h>
 #include <time.h>
 
-// Formats file size from raw bytes to a more readable format
+// Formats file size from raw bytes to a more readable format (Color coded)
+static char *format_size_colored(off_t size) {
+    static char formatted_size[128];
+    if (size < 1024) {
+        snprintf(formatted_size, sizeof(formatted_size), "%ld%s%s%s", size, GREEN, "B", RESET);
+    } else if (size < 1024 * 1024) {
+        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", size / 1024.0, YELLOW, "K", RESET);
+    } else if (size < 1024 * 1024 * 1024) {
+        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", size / 1024.0 / 1024.0, ORANGE, "M", RESET);
+    } else {
+        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", size / 1024.0 / 1024.0 / 1024.0, RED, "G", RESET);
+    }
+    return formatted_size;
+}
+
+// Formats file size from raw bytes to a more readable format (Not color coded)
 static char *format_size(off_t size) {
     static char formatted_size[128];
     if (size < 1024) {
@@ -64,7 +79,9 @@ void print_detailed(Entry *entries, int count, int max_len) {
     for (int i = 0; i < count; i++) {
         char *icon = getIcon(entries[i].name, entries[i].type);
         char *color = getColor(entries[i].name, entries[i].type);
-        char *size = entries[i].type == DT_DIR ? "-" : format_size(entries[i].size);
+        char *size = entries[i].type == DT_DIR ? "-" : format_size_colored(entries[i].size);
+        int plain_len = entries[i].type == DT_DIR ? 1 : strlen(format_size(entries[i].size));
+        int size_padding = max_size_len - plain_len;
         char *date = format_date(entries[i].mtime);
         char *mode = format_permissions(entries[i].mode);
 
@@ -75,6 +92,11 @@ void print_detailed(Entry *entries, int count, int max_len) {
         for (int j = 0; j < padding; j++) {
             printf(" ");
         }
-        printf("    %s    %*s    %s\n", mode, max_size_len, size, date);
+
+        printf("    %s    ", mode);
+        for (int j = 0; j < size_padding; j++) {
+            printf(" ");
+        }
+        printf("%s    %s\n", size, date);
     }
 }
