@@ -52,8 +52,10 @@ int main(int argc, char *argv[]) {
             return 0;
         } else if (!strcmp(argv[i], "--no-icons")) {
             config_icons = 0;
+            config.icons = 0;
         } else if (!strcmp(argv[i], "--no-color")) {
             config_color = 0;
+            config.color = 0;
         }
         // Configuration flag for icons
         else if (!strncmp(argv[i], "--set-icons=", 12)) {
@@ -129,7 +131,10 @@ int main(int argc, char *argv[]) {
         } else {
             char *icon = config_icons ? getIcon(path, DT_REG) : "";
             char *color = config_color ? getColor(path, DT_REG) : "";
-            printf("%s%s %s%s\n", color, icon, path, RESET);
+            if (config_icons)
+                printf("%s%s %s%s", color, icon, path, RESET);
+            else
+                printf("%s%s%s", color, path, RESET);
         }
         return 0;
     }
@@ -187,7 +192,10 @@ int main(int argc, char *argv[]) {
             }
             char *icon = config_icons ? getIcon(entries[i].name, entries[i].type) : "";
             char *color = config_color ? getColor(entries[i].name, entries[i].type) : "";
-            printf("%s%s %s%s\n", color, icon, display_name, RESET);
+            if (config_icons)
+                printf("%s%s %s%s\n", color, icon, display_name, RESET);
+            else
+                printf("%s%s%s\n", color, display_name, RESET);
         }
     } else {
         struct winsize w;
@@ -217,7 +225,11 @@ int main(int argc, char *argv[]) {
             int icon_len = visual_len(icon);
             int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
-            printf("%s%s %s%s", color, icon, display_name, RESET);
+            // printf("%s%s %s%s", color, icon, display_name, RESET);
+            if (config_icons)
+                printf("%s%s %s%s", color, icon, display_name, RESET);
+            else
+                printf("%s%s%s", color, display_name, RESET);
             for (int p = 0; p < padding; p++) {
                 printf(" ");
             }
