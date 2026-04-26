@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
         // Help menu
         if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
             printf("\n");
-            printf("Usage: lsi [flags]\n");
+            printf("Usage: lsi [FLAG]... [FILE]...\n");
             printf("\n");
             printf("Flags:\n");
             printf("  -a        Show hidden files\n");
