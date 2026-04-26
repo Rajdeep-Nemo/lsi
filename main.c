@@ -55,6 +55,30 @@ int main(int argc, char *argv[]) {
         } else if (!strcmp(argv[i], "--no-color")) {
             config_color = 0;
         }
+        // Configuration flag for icons
+        else if (!strncmp(argv[i], "--set-icons=", 12)) {
+            char *value = argv[i] + 12;
+            if (!strcmp(value, "true") || !strcmp(value, "false")) {
+                config.icons = !strcmp(value, "true") ? 1 : 0;
+                save_config(config);
+                return 0;
+            } else {
+                printf("lsi: invalid value '%s' for --set-icons, use true or false\n", value);
+                return 1;
+            }
+        }
+        // Configuration flag for icons
+        else if (!strncmp(argv[i], "--set-color=", 12)) {
+            char *value = argv[i] + 12;
+            if (!strcmp(value, "true") || !strcmp(value, "false")) {
+                config.color = !strcmp(value, "true") ? 1 : 0;
+                save_config(config);
+                return 0;
+            } else {
+                printf("lsi: invalid value '%s' for --set-color, use true or false\n", value);
+                return 1;
+            }
+        }
         // Checks if argument is a path
         else if (argv[i][0] != '-') {
             path = argv[i];
@@ -105,7 +129,7 @@ int main(int argc, char *argv[]) {
         } else {
             char *icon = config_icons ? getIcon(path, DT_REG) : "";
             char *color = config_color ? getColor(path, DT_REG) : "";
-            printf(" %s%s %s%s\n", color, icon, path, RESET);
+            printf("%s%s %s%s\n", color, icon, path, RESET);
         }
         return 0;
     }
@@ -163,7 +187,7 @@ int main(int argc, char *argv[]) {
             }
             char *icon = config_icons ? getIcon(entries[i].name, entries[i].type) : "";
             char *color = config_color ? getColor(entries[i].name, entries[i].type) : "";
-            printf(" %s%s %s%s\n", color, icon, display_name, RESET);
+            printf("%s%s %s%s\n", color, icon, display_name, RESET);
         }
     } else {
         struct winsize w;
@@ -193,7 +217,7 @@ int main(int argc, char *argv[]) {
             int icon_len = visual_len(icon);
             int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
-            printf(" %s%s %s%s", color, icon, display_name, RESET);
+            printf("%s%s %s%s", color, icon, display_name, RESET);
             for (int p = 0; p < padding; p++) {
                 printf(" ");
             }
