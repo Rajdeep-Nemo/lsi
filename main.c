@@ -1,5 +1,6 @@
 #define _DEFAULT_SOURCE
 #include "colors.h"
+#include "config.h"
 #include "detailed.h"
 #include "entry.h"
 #include "sort.h"
@@ -18,6 +19,11 @@ int visual_len(char *icon) {
 }
 
 int main(int argc, char *argv[]) {
+    // Config
+    Config config = load_config();
+    int icons = config.icons;
+    int color = config.color;
+    // Default path is the same directory the command is being called from
     char *path = ".";
     // Flag variables
     int show_hidden = 0;
@@ -89,9 +95,11 @@ int main(int argc, char *argv[]) {
             e.size = s.st_size;
             e.mtime = s.st_mtime;
             e.mode = s.st_mode;
-            print_detailed(&e, 1, strlen(path));
+            print_detailed(&e, 1, strlen(path), config);
         } else {
-            printf(" %s%s %s%s\n", getColor(path, DT_REG), getIcon(path, DT_REG), path, RESET);
+            char *icon = icons ? getIcon(path, DT_REG) : "";
+            char *col = color ? getColor(path, DT_REG) : "";
+            printf(" %s%s %s%s\n", col, icon, path, RESET);
         }
         return 0;
     }
@@ -113,8 +121,6 @@ int main(int argc, char *argv[]) {
 
         strcpy(entries[count].name, entry->d_name);
         entries[count].type = entry->d_type;
-        // struct stat s;
-        // stat(entry->d_name, &s);
         char full_path[1024];
         snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
         struct stat s;
@@ -137,7 +143,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (show_detailed) {
-        print_detailed(entries, count, max_len);
+        print_detailed(entries, count, max_len, config);
     } else if (one_per_line) {
         for (int i = 0; i < count; i++) {
             char *name = entries[i].name;
@@ -149,11 +155,9 @@ int main(int argc, char *argv[]) {
             } else {
                 display_name = name;
             }
-            printf("%s%s %s%s\n",
-                   getColor(entries[i].name, entries[i].type),
-                   getIcon(entries[i].name, entries[i].type),
-                   display_name,
-                   RESET);
+            char *icon = icons ? getIcon(entries[i].name, entries[i].type) : "";
+            char *col = color ? getColor(entries[i].name, entries[i].type) : "";
+            printf(" %s%s %s%s\n", col, icon, display_name, RESET);
         }
     } else {
         struct winsize w;
@@ -166,7 +170,8 @@ int main(int argc, char *argv[]) {
             num_cols = 1;
 
         for (int i = 0; i < count; i++) {
-            char *icon = getIcon(entries[i].name, entries[i].type);
+            char *icon = icons ? getIcon(entries[i].name, entries[i].type) : "";
+            char *col = color ? getColor(entries[i].name, entries[i].type) : "";
             char *name = entries[i].name;
 
             char *display_name;
@@ -182,7 +187,7 @@ int main(int argc, char *argv[]) {
             int icon_len = visual_len(icon);
             int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
-            printf(" %s%s %s%s", getColor(entries[i].name, entries[i].type), icon, display_name, RESET);
+            printf(" %s%s %s%s", col, icon, display_name, RESET);
             for (int p = 0; p < padding; p++) {
                 printf(" ");
             }
