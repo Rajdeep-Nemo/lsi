@@ -4,7 +4,9 @@
 
 A modern file lister with file type icons, true colors, smart sorting, tree view and a config file.
 
-![screenshot placeholder]
+![Default Screenshot](assets/Default.png)
+![Detailed View Screenshot](assets/Detailed.png)
+![Tree View Screenshot](assets/Tree.png)
 
 ---
 
