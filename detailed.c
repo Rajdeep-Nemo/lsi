@@ -89,9 +89,6 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
         char *date = format_date(entries[i].mtime);
         char *mode = format_permissions(entries[i].mode);
 
-        int name_len = strlen(entries[i].name);
-        int padding = max_len - name_len;
-
         char *display_name;
         char quoted[258];
         if (strchr(entries[i].name, ' ') != NULL) {
@@ -100,6 +97,9 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
         } else {
             display_name = entries[i].name;
         }
+
+        int name_len = strlen(display_name);
+        int padding = max_len - name_len;
 
         if (config.icons)
             printf("%s%s %s%s", color, icon, display_name, RESET);

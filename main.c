@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
     // Find the element with the longest name
     int max_len = 0;
     for (int i = 0; i < count; i++) {
-        int len = strlen(entries[i].name);
+        int len = strchr(entries[i].name, ' ') ? strlen(entries[i].name) + 2 : strlen(entries[i].name);
         if (len > max_len) {
             max_len = len;
         }
