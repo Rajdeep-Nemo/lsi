@@ -1,11 +1,14 @@
 CC = gcc
 SRC = main.c style.c sort.c detailed.c config.c tree.c
 TARGET = lsi
+INSTALL_DIR = $(HOME)/.local/bin
 
 install:
+	mkdir -p $(INSTALL_DIR)
 	$(CC) $(SRC) -o $(TARGET)
-	sudo mv $(TARGET) /usr/local/bin/$(TARGET)
+	mv $(TARGET) $(INSTALL_DIR)/$(TARGET)
 
 remove:
-	sudo rm -f /usr/local/bin/$(TARGET)
+	rm -f $(INSTALL_DIR)/$(TARGET)
 	rm -rf $(HOME)/.config/lsi
+	@echo "lsi removed — binary and config deleted"
