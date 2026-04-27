@@ -15,6 +15,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <libgen.h>
 
 // Visual length for each icon is fixed 2
 int visual_len(char *icon) {
@@ -141,6 +142,10 @@ int main(int argc, char *argv[]) {
         printf("lsi: cannot access '%s': No such file or directory\n", path);
         return 1;
     } else if (S_ISREG(s.st_mode)) {
+        if (tree) {
+            printf("lsi: '%s' is not a directory\n", path);
+            return 1;
+        }
         if (show_detailed) {
             Entry e;
             strcpy(e.name, path);
@@ -199,6 +204,18 @@ int main(int argc, char *argv[]) {
     }
 
     if (tree) {
+        char *dir_name = basename(path);
+        char *color = config.color ? getColor(dir_name, DT_DIR) : "";
+        char *icon = config.icons ? getIcon(dir_name, DT_DIR) : "";
+        char *display_name;
+        char quoted[258];
+        if (strchr(dir_name, ' ') != NULL) {
+            snprintf(quoted, sizeof(quoted), "'%s'", dir_name);
+            display_name = quoted;
+        } else {
+            display_name = dir_name;
+        }
+        printf("%s%s %s%s\n", color, icon, display_name, RESET);
         print_tree(path, 0, tree_depth, config, "", show_hidden);
     } else if (show_detailed) {
         print_detailed(entries, count, max_len, config);
