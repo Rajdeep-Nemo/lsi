@@ -8,3 +8,4 @@ install:
 
 remove:
 	sudo rm -f /usr/local/bin/$(TARGET)
+	rm -rf $(HOME)/.config/lsi
