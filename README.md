@@ -47,11 +47,16 @@ A modern file lister with file type icons, true colors, smart sorting, tree view
 ## Installation
 
 ```bash
-git clone https://github.com/Rajdeep-Nemo/lsi
+git clone https://github.com/<your-github-username>/lsi
 cd lsi
 make install
 ```
-> **Note:** `lsi` is installed to `/usr/local/bin` — user space, not system wide. `sudo` is only required to copy the binary there. No system files are modified.
+
+> **Note:** `lsi` is installed to `~/.local/bin` — no `sudo` required. If `lsi` is not found after install, make sure `~/.local/bin` is in your PATH:
+> ```bash
+> export PATH="$HOME/.local/bin:$PATH"
+> ```
+> Add that line to your `~/.bashrc` or `~/.zshrc` to make it permanent, then run `source ~/.bashrc`.
 
 ---
 
@@ -60,7 +65,9 @@ make install
 ```bash
 make remove
 ```
-> **Note:** This removes both the binary from `/usr/local/bin` and the config file at `~/.config/lsi/`.
+
+> **Note:** This removes both the binary from `~/.local/bin` and the config file at `~/.config/lsi/`.
+
 ---
 
 ## Usage
