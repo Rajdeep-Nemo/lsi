@@ -8,6 +8,7 @@
 #include "style.h"
 #include "tree.h"
 #include <dirent.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +16,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <libgen.h>
 
 // Visual length for each icon is fixed 2
 int visual_len(char *icon) {
@@ -41,18 +41,28 @@ int main(int argc, char *argv[]) {
         if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
             printf("Usage: lsi [FLAG]... [FILE]...\n");
             printf("Flags:\n");
-            printf("  -a                Show hidden files\n");
-            printf("  -r                Reverse sort order\n");
-            printf("  -s                Sort by file size\n");
-            printf("  -t                Sort by date modified\n");
-            printf("  -l                Detailed view\n");
-            printf("  -1                One entry per line\n");
-            printf("  -h                Show this help menu\n");
-            printf("  --tree            Tree view with default depth 1\n");
-            printf("  --tree=N          Tree view with depth N\n");
-            printf("  --no-icons        Temporarily disable icons\n");
-            printf("  --no-color        Temporarily disable colors\n");
-            printf("  --version         Shows version informations\n");
+            printf("  -a              Show hidden files\n");
+            printf("  -l              Detailed view\n");
+            printf("  -1              One entry per line\n");
+            printf("  -r              Reverse sort order\n");
+            printf("  -s              Sort by file size\n");
+            printf("  -t              Sort by date modified\n");
+            printf("\n");
+            printf("Tree View:\n");
+            printf("  --tree          Tree view with default depth 1\n");
+            printf("  --tree=N        Tree view with depth N\n");
+            printf("\n");
+            printf("Display Overrides:\n");
+            printf("  --no-icons      Temporarily disable icons\n");
+            printf("  --no-color      Temporarily disable colors\n");
+            printf("\n");
+            printf("Config:\n");
+            printf("  --set-icons=    Permanently set icons visibility (true/false)\n");
+            printf("  --set-color=    Permanently set color visibility (true/false)\n");
+            printf("\n");
+            printf("Other:\n");
+            printf("  -h, --help      Show this help menu\n");
+            printf("  -v, --version   Show version info\n");
             printf("\n");
             return 0;
         } else if (!strcmp(argv[i], "--no-icons")) {
@@ -202,7 +212,11 @@ int main(int argc, char *argv[]) {
             max_len = len;
         }
     }
-
+    if (tree && show_detailed) {
+        printf("lsi: cannot use -l and --tree together\n");
+        printf("Try 'lsi -help' for more information.\n");
+        return 1;
+    }
     if (tree) {
         char *dir_name = basename(path);
         char *color = config.color ? getColor(dir_name, DT_DIR) : "";
