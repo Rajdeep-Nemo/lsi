@@ -218,7 +218,9 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (tree) {
-        char *dir_name = basename(path);
+        char real_path[1024];
+        realpath(path, real_path);
+        char *dir_name = basename(real_path);
         char *color = config.color ? getColor(dir_name, DT_DIR) : "";
         char *icon = config.icons ? getIcon(dir_name, DT_DIR) : "";
         char *display_name;
