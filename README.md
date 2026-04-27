@@ -4,8 +4,11 @@
 
 A modern file lister with file type icons, true colors, smart sorting, tree view and a config file.
 
+<h3>Default View</h3>
 <img src="assets/Default.png" width="500">
+<h3>Detailed View (-l)</h3>
 <img src="assets/Detailed.png" width="500">
+<h3>Tree View (--tree)</h3>
 <img src="assets/Tree.png" width="500">
 
 ## Features
@@ -26,7 +29,18 @@ A modern file lister with file type icons, true colors, smart sorting, tree view
 
 - A [Nerd Font](https://www.nerdfonts.com/) installed and set as your terminal font
 - A terminal with true color support (GNOME Terminal, Kitty, Alacritty etc)
-- Linux
+- Linux (macOS may work but is not officially tested, Windows is not supported)
+
+---
+
+## Tested On
+
+| Component | Version |
+|---|---|
+| OS | Fedora 43 |
+| Terminal | GNOME Terminal |
+| Font | JetBrains Mono Nerd Font |
+| Compiler | GCC 15.2.1 20260123 (Red Hat 15.2.1-7) |
 
 ---
 
@@ -115,6 +129,7 @@ lsi/
 ├── config.h
 ├── entry.h         → shared Entry struct
 ├── colors.h        → color definitions
+├── assets          → contains screenshots
 ├── Makefile
 ├── LICENSE
 ├── .clang-format
@@ -126,7 +141,7 @@ lsi/
 
 ## Author
 
-[**Rajdeep Nemo**](https://github.com/Rajdeep-Nemo)
+[Rajdeep Nemo](https://github.com/Rajdeep-Nemo)
 
 ---
 
