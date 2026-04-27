@@ -51,6 +51,7 @@ git clone https://github.com/Rajdeep-Nemo/lsi
 cd lsi
 make install
 ```
+> **Note:** `lsi` is installed to `/usr/local/bin` — user space, not system wide. `sudo` is only required to copy the binary there. No system files are modified.
 
 ---
 
@@ -59,7 +60,7 @@ make install
 ```bash
 make remove
 ```
-
+> **Note:** This removes both the binary from `/usr/local/bin` and the config file at `~/.config/lsi/`.
 ---
 
 ## Usage
