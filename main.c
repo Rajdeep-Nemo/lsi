@@ -1,3 +1,4 @@
+#define VERSION "1.0"
 #define _DEFAULT_SOURCE
 #include "colors.h"
 #include "config.h"
@@ -33,9 +34,7 @@ int main(int argc, char *argv[]) {
     for (int i = 1; i < argc; i++) {
         // Help menu
         if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
-            printf("\n");
             printf("Usage: lsi [FLAG]... [FILE]...\n");
-            printf("\n");
             printf("Flags:\n");
             printf("  -a                Show hidden files\n");
             printf("  -r                Reverse sort order\n");
@@ -46,12 +45,23 @@ int main(int argc, char *argv[]) {
             printf("  -h                Show this help menu\n");
             printf("  --no-icons        Temporarily disable icons\n");
             printf("  --no-color        Temporarily disable colors\n");
+            printf("  --version         Shows version informations\n");
             printf("\n");
             return 0;
         } else if (!strcmp(argv[i], "--no-icons")) {
             config.icons = 0;
         } else if (!strcmp(argv[i], "--no-color")) {
             config.color = 0;
+        } else if (!strcmp(argv[i], "--version") || !strcmp(argv[i], "-v")) {
+
+            printf(CYAN "lsi " YELLOW "%s\n" RESET, VERSION);
+            printf("Because plain ls was not enough\n");
+            printf("Copyright(c) 2026 RAJDEEP NEMO\n");
+            printf(CYAN "Author: " RESET "Rajdeep Nemo\n");
+            printf(CYAN "License: " RESET "MIT\n");
+            printf(CYAN "GitHub: " RESET "https://github.com/Rajdeep-Nemo/lsi\n");
+
+            return 0;
         }
         // Configuration flag for icons
         else if (!strncmp(argv[i], "--set-icons=", 12)) {
