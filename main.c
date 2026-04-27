@@ -1,4 +1,4 @@
-#define VERSION "1.0"
+#define VERSION "1.1"
 #define _DEFAULT_SOURCE
 #include "colors.h"
 #include "config.h"
@@ -6,8 +6,10 @@
 #include "entry.h"
 #include "sort.h"
 #include "style.h"
+#include "tree.h"
 #include <dirent.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <sys/stat.h>
@@ -30,6 +32,8 @@ int main(int argc, char *argv[]) {
     int reverse = 0;
     int show_detailed = 0;
     int one_per_line = 0;
+    int tree = 0;
+    int tree_depth = 1;
     // Flag validation loop
     for (int i = 1; i < argc; i++) {
         // Help menu
@@ -43,6 +47,8 @@ int main(int argc, char *argv[]) {
             printf("  -l                Detailed view\n");
             printf("  -1                One entry per line\n");
             printf("  -h                Show this help menu\n");
+            printf("  --tree            Tree view with default depth 1\n");
+            printf("  --tree=N          Tree view with depth N\n");
             printf("  --no-icons        Temporarily disable icons\n");
             printf("  --no-color        Temporarily disable colors\n");
             printf("  --version         Shows version informations\n");
@@ -52,6 +58,15 @@ int main(int argc, char *argv[]) {
             config.icons = 0;
         } else if (!strcmp(argv[i], "--no-color")) {
             config.color = 0;
+        } else if (!strcmp(argv[i], "--tree")) {
+            tree = 1;
+        } else if (!strncmp(argv[i], "--tree=", 7)) {
+            tree = 1;
+            tree_depth = atoi(argv[i] + 7);
+            if (tree_depth <= 0) {
+                printf("lsi: tree depth must be greater than 0\n");
+                return 1;
+            }
         } else if (!strcmp(argv[i], "--version") || !strcmp(argv[i], "-v")) {
 
             printf(CYAN "lsi " YELLOW "%s\n" RESET, VERSION);
@@ -183,7 +198,9 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    if (show_detailed) {
+    if (tree) {
+        print_tree(path, 0, tree_depth, config, "", show_hidden);
+    } else if (show_detailed) {
         print_detailed(entries, count, max_len, config);
     } else if (one_per_line) {
         for (int i = 0; i < count; i++) {
