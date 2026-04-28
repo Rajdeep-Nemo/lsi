@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     // Flag validation loop
     for (int i = 1; i < argc; i++) {
         // Help menu
-        if (!strcmp(argv[i], "-help") || !strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
+        if (!strcmp(argv[i], "--help") || !strcmp(argv[i], "-h")) {
             printf("Usage: lsi [FLAG]... [FILE]...\n");
             printf("Flags:\n");
             printf("  -a              Show hidden files\n");
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
                 // Invalid
                 else {
                     printf("lsi: unknown flag '-%c'\n", flag[j]);
-                    printf("Try 'lsi -help' for more information.\n");
+                    printf("Try 'lsi --help' for more information.\n");
                     return 1;
                 }
             }
@@ -216,7 +216,7 @@ int main(int argc, char *argv[]) {
     }
     if (tree && show_detailed) {
         printf("lsi: cannot use -l and --tree together\n");
-        printf("Try 'lsi -help' for more information.\n");
+        printf("Try 'lsi --help' for more information.\n");
         return 1;
     }
     if (tree) {
