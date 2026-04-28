@@ -1,4 +1,4 @@
-#define VERSION "1.1"
+#define VERSION "1.2"
 #define _DEFAULT_SOURCE
 #include "colors.h"
 #include "config.h"
