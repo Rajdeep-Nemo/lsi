@@ -53,8 +53,8 @@ void print_tree(char *path, int depth, int max_depth, Config config, char *prefi
         printf("%s%s ", prefix, is_last ? "└──" : "├──");
 
         // print icon + name with color
-        char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
-        char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
+        char *icon = config.icons ? getIcon(entries[i].name, entries[i].type, entries[i].mode) : "";
+        char *color = config.color ? getColor(entries[i].name, entries[i].type, entries[i].mode) : "";
 
         char *display_name;
         char quoted[258];

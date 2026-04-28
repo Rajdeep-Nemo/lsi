@@ -1,11 +1,21 @@
 #define _DEFAULT_SOURCE
 #include "style.h"
 #include "colors.h"
+#include "entry.h"
 #include <dirent.h>
 #include <string.h>
+#include <sys/stat.h>
 
 // Selects the appropriate icon
-char *getIcon(char *name, unsigned char type) {
+char *getIcon(char *name, unsigned char type, mode_t mode) {
+
+    // Checks if it is executable
+    if (type == DT_REG &&
+        !strrchr(name, '.') &&
+        (mode & (S_IXUSR | S_IXGRP | S_IXOTH))) {
+        return "";
+    }
+
     // Dierctory
     if (type == DT_DIR)
         return "";
@@ -148,7 +158,13 @@ char *getIcon(char *name, unsigned char type) {
 }
 
 // Selects the appropriate color
-char *getColor(char *name, unsigned char type) {
+char *getColor(char *name, unsigned char type, mode_t mode) {
+    // Checks if it is executable
+    if (type == DT_REG &&
+        !strrchr(name, '.') &&
+        (mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
+        return CRIMSON;
+
     // Dierctory
     if (type == DT_DIR)
         return BLUE;

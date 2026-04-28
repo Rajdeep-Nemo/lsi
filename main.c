@@ -165,8 +165,10 @@ int main(int argc, char *argv[]) {
             e.mode = s.st_mode;
             print_detailed(&e, 1, strlen(path), config);
         } else {
-            char *icon = config.icons ? getIcon(path, DT_REG) : "";
-            char *color = config.color ? getColor(path, DT_REG) : "";
+            Entry e;
+            e.mode = s.st_mode;
+            char *icon = config.icons ? getIcon(path, DT_REG, e.mode) : "";
+            char *color = config.color ? getColor(path, DT_REG, e.mode) : "";
             if (config.icons)
                 printf("%s%s %s%s", color, icon, path, RESET);
             else
@@ -221,8 +223,8 @@ int main(int argc, char *argv[]) {
         char real_path[1024];
         realpath(path, real_path);
         char *dir_name = basename(real_path);
-        char *color = config.color ? getColor(dir_name, DT_DIR) : "";
-        char *icon = config.icons ? getIcon(dir_name, DT_DIR) : "";
+        char *color = config.color ? getColor(dir_name, DT_DIR, 0) : "";
+        char *icon = config.icons ? getIcon(dir_name, DT_DIR, 0) : "";
         char *display_name;
         char quoted[258];
         if (strchr(dir_name, ' ') != NULL) {
@@ -246,8 +248,8 @@ int main(int argc, char *argv[]) {
             } else {
                 display_name = name;
             }
-            char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
-            char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
+            char *icon = config.icons ? getIcon(entries[i].name, entries[i].type, entries[i].mode) : "";
+            char *color = config.color ? getColor(entries[i].name, entries[i].type, entries[i].mode) : "";
             if (config.icons)
                 printf("%s%s %s%s\n", color, icon, display_name, RESET);
             else
@@ -264,8 +266,8 @@ int main(int argc, char *argv[]) {
             num_cols = 1;
 
         for (int i = 0; i < count; i++) {
-            char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
-            char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
+            char *icon = config.icons ? getIcon(entries[i].name, entries[i].type, entries[i].mode) : "";
+            char *color = config.color ? getColor(entries[i].name, entries[i].type, entries[i].mode) : "";
             char *name = entries[i].name;
 
             char *display_name;

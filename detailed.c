@@ -78,8 +78,8 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
         }
     }
     for (int i = 0; i < count; i++) {
-        char *icon = config.icons ? getIcon(entries[i].name, entries[i].type) : "";
-        char *color = config.color ? getColor(entries[i].name, entries[i].type) : "";
+        char *icon = config.icons ? getIcon(entries[i].name, entries[i].type, entries[i].mode) : "";
+        char *color = config.color ? getColor(entries[i].name, entries[i].type, entries[i].mode) : "";
         char *size = entries[i].type == DT_DIR ? "-"
                                                : (config.color ? format_size_colored(entries[i].size)
                                                                : format_size(entries[i].size));
