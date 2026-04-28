@@ -22,4 +22,10 @@ Everyone is free to contribute! To do so:
 - Test your changes before submitting
 - One feature or fix per pull request
 
-No contribution is too small — even fixing a typo is appreciated!
+## Code Style
+
+This project uses `clang-format` for consistent code formatting. Before submitting a pull request, format your code using the included `.clang-format` file:
+
+```bash
+clang-format -i *.c *.h
+```
