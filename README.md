@@ -142,6 +142,7 @@ lsi/
 ├── LICENSE
 ├── .clang-format
 ├── .gitignore
+├── CONTRIBUTING.md
 └── README.md
 ```
 
