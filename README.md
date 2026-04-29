@@ -47,7 +47,7 @@ A modern file lister with file type icons, true colors, smart sorting, tree view
 ## Installation
 
 ```bash
-git clone https://github.com/<your-github-username>/lsi
+git clone https://github.com/Rajdeep-Nemo/lsi
 cd lsi
 make install
 ```
