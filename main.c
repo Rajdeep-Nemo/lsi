@@ -1,4 +1,4 @@
-#define VERSION "1.2"
+#define VERSION "1.3"
 #define _DEFAULT_SOURCE
 #include "colors.h"
 #include "config.h"
@@ -164,15 +164,15 @@ int main(int argc, char *argv[]) {
             e.mtime = s.st_mtime;
             e.mode = s.st_mode;
             print_detailed(&e, 1, strlen(path), config);
-        } else {
+        } else { // If a single file is given as parameter, it will list the file itself (e.g. lsi main.c)
             Entry e;
             e.mode = s.st_mode;
             char *icon = config.icons ? getIcon(path, DT_REG, e.mode) : "";
             char *color = config.color ? getColor(path, DT_REG, e.mode) : "";
             if (config.icons)
-                printf("%s%s %s%s", color, icon, path, RESET);
+                printf("%s%s %s%s\n", color, icon, path, RESET);
             else
-                printf("%s%s%s", color, path, RESET);
+                printf("%s%s%s\n", color, path, RESET);
         }
         return 0;
     }
