@@ -81,11 +81,7 @@ int main(int argc, char *argv[]) {
         } else if (!strcmp(argv[i], "--version") || !strcmp(argv[i], "-v")) {
 
             printf(CYAN "lsi " YELLOW "%s\n" RESET, VERSION);
-            printf("Because plain ls was not enough\n");
             printf("Copyright(c) 2026 RAJDEEP NEMO\n");
-            printf(CYAN "Author: " RESET "Rajdeep Nemo\n");
-            printf(CYAN "License: " RESET "MIT\n");
-            printf(CYAN "GitHub: " RESET "https://github.com/Rajdeep-Nemo/lsi\n");
 
             return 0;
         }
