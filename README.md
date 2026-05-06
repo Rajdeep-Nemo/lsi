@@ -2,8 +2,9 @@
 
 > Because plain `ls` was not enough.
 
-A modern file lister with file type icons, true colors, smart sorting, tree view and a config file.
-
+A file lister with file type icons, true colors, smart sorting, tree view and a config file.
+> [!NOTE]
+> `lsi` is not a replacement of `ls`.
 <h3>Default View</h3>
 <img src="assets/Default.png" width="500">
 <h3>Detailed View (-l)</h3>
