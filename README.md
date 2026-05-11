@@ -2,7 +2,7 @@
 
 > Because plain `ls` was not enough.
 
-A file lister with file type icons, true colors, smart sorting, tree view and a config file.
+A file lister with file type icons and true colors.
 > [!NOTE]
 > `lsi` is not a replacement of `ls`.
 <h3>Default View</h3>
@@ -38,7 +38,7 @@ A file lister with file type icons, true colors, smart sorting, tree view and a 
 
 | Component | Version |
 |---|---|
-| OS | Fedora 43 |
+| OS | Fedora 43, Zorin OS 18.1 |
 | Terminal | GNOME Terminal |
 | Font | JetBrains Mono Nerd Font |
 | Compiler | GCC 15.2.1 20260123 (Red Hat 15.2.1-7) |
