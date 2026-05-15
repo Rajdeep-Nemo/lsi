@@ -18,11 +18,4 @@ a.out
 
 build/
 
-*.gcda
-*.gcno
-gmon.out
-
-*~
-*.swp
-
 Test/
