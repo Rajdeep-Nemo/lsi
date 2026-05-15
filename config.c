@@ -56,7 +56,7 @@ Config load_config() {
 }
 
 // Saves a config
-void save_config(Config config) {
+void save_config(const Config config) {
     char config_path[512];
     snprintf(config_path, sizeof(config_path), "%s/.config/lsi/lsi.conf", getenv("HOME"));
 
