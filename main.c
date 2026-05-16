@@ -157,7 +157,7 @@ int main(int argc, char *argv[]) {
             e.size = s.st_size;
             e.time = s.st_mtime;
             e.mode = s.st_mode;
-            print_detailed(&e, 1, strlen(path), config);
+            print_detailed(&e, 1, (int)strlen(path), config);
         } else { // If a single file is given as parameter, it will list the file itself (e.g. lsi main.c)
             Entry e;
             e.mode = s.st_mode;
@@ -203,7 +203,7 @@ int main(int argc, char *argv[]) {
     // Find the element with the longest name
     int max_len = 0;
     for (int i = 0; i < count; i++) {
-        int len = strchr(entries[i].name, ' ') ? strlen(entries[i].name) + 2 : strlen(entries[i].name);
+        int len = strchr(entries[i].name, ' ') ? (int)strlen(entries[i].name) + 2 : (int)strlen(entries[i].name);
         if (len > max_len) {
             max_len = len;
         }
@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
                 display_name = name;
             }
 
-            int name_len = strlen(display_name);
+            int name_len = (int)strlen(display_name);
             int icon_len = visual_len(icon);
             int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
