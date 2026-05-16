@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #include "config.h"
 #include "entry.h"
 #include "colors.h"
@@ -10,7 +9,7 @@
 #include <string.h>
 
 // Recursive function for tree view
-void print_tree(char *path, int depth, int max_depth, Config config, char *prefix, int show_hidden) {
+void print_tree(char *path, const int depth, const int max_depth, const Config config, char *prefix, const int show_hidden) {
     DIR *currentDir = opendir(path);
 
     if (currentDir == NULL) {
@@ -38,7 +37,7 @@ void print_tree(char *path, int depth, int max_depth, Config config, char *prefi
         struct stat s;
         stat(full_path, &s);
         entries[count].size = s.st_size;
-        entries[count].mtime = s.st_mtime;
+        entries[count].time = s.st_mtime;
         entries[count].mode = s.st_mode;
         count += 1;
     }
@@ -47,7 +46,7 @@ void print_tree(char *path, int depth, int max_depth, Config config, char *prefi
     sort_entries(entries, count, SORT_NAME, 0);
 
     for (int i = 0; i < count; i++) {
-        int is_last = (i == count - 1);
+        const int is_last = (i == count - 1);
 
         // print prefix + connector
         printf("%s%s ", prefix, is_last ? "└──" : "├──");
