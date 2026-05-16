@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
             }
         } else if (!strcmp(argv[i], "--version") || !strcmp(argv[i], "-v")) {
 
-            printf(CYAN "lsi " YELLOW "%s\n" RESET, VERSION);
+            printf("lsi %s\n", VERSION);
 
             return 0;
         }
