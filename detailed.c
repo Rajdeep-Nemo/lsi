@@ -85,7 +85,7 @@ void print_detailed(Entry *entries, const int count, const int max_len, const Co
 
         const int plain_len = entries[i].type == DT_DIR ? 1 : (int)strlen(format_size(entries[i].size));
         const int size_padding = max_size_len - plain_len;
-        char *date = format_date(entries[i].mtime);
+        char *date = format_date(entries[i].time);
         char *mode = format_permissions(entries[i].mode);
 
         char *display_name;
