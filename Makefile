@@ -3,9 +3,19 @@ SRC = main.c style.c sort.c detailed.c config.c tree.c
 TARGET = lsi
 INSTALL_DIR = $(HOME)/.local/bin
 
-install:
+all: $(TARGET)
+
+$(TARGET): $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+
+clean:
+	rm -f $(TARGET)
+
+format:
+	find . \( -name "*.c" -o -name "*.h" \) -exec clang-format -i {} +
+
+install: $(TARGET)
 	mkdir -p $(INSTALL_DIR)
-	$(CC) $(SRC) -o $(TARGET)
 	mv $(TARGET) $(INSTALL_DIR)/$(TARGET)
 
 remove:
