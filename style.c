@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #include "style.h"
 #include "colors.h"
 #include "entry.h"
@@ -7,7 +6,7 @@
 #include <sys/stat.h>
 
 // Selects the appropriate icon
-char *getIcon(char *name, unsigned char type, mode_t mode) {
+char *getIcon(const char *name, const unsigned char type, const mode_t mode) {
 
     // Checks if it is executable
     if (type == DT_REG &&
@@ -16,20 +15,20 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
         return "";
     }
 
-    // Dierctory
+    // Directory
     if (type == DT_DIR)
         return "";
 
-    // Compound extensions first (Done)
+    // Compound extensions
     if (strstr(name, ".tar."))
         return "";
 
-    // Get extension for rest (Done)
-    char *ext = strrchr(name, '.');
+    // Get extension for the rest
+    const char *ext = strrchr(name, '.');
     if (ext == NULL)
         return "";
 
-    // Code / Programming languages (Done)
+    // Programming languages
     if (!strcmp(ext, ".c"))
         return "";
     if (!strcmp(ext, ".h"))
@@ -59,7 +58,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".php"))
         return "";
 
-    // Shell / Config (Done)
+    // Shell / Config
     if (!strcmp(ext, ".sh"))
         return "";
     if (!strcmp(ext, ".bash"))
@@ -67,7 +66,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".zsh"))
         return "";
 
-    // Documents (Done)
+    // Documents
     if (!strcmp(ext, ".txt"))
         return "";
     if (!strcmp(ext, ".md"))
@@ -85,7 +84,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".ppt"))
         return "󰐩";
 
-    // Images (Done)
+    // Images
     if (!strcmp(ext, ".png"))
         return "";
     if (!strcmp(ext, ".jpg"))
@@ -99,7 +98,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".webp"))
         return "";
 
-    // Video (Done)
+    // Video
     if (!strcmp(ext, ".mp4"))
         return "";
     if (!strcmp(ext, ".mkv"))
@@ -109,7 +108,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".mov"))
         return "";
 
-    // Audio (Done)
+    // Audio
     if (!strcmp(ext, ".mp3"))
         return "";
     if (!strcmp(ext, ".wav"))
@@ -119,7 +118,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".ogg"))
         return "";
 
-    // Archives (Done)
+    // Archives
     if (!strcmp(ext, ".zip"))
         return "";
     if (!strcmp(ext, ".rar"))
@@ -131,7 +130,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".tar"))
         return "";
 
-    // Binaries (Done)
+    // Binaries
     if (!strcmp(ext, ".exe"))
         return "";
     if (!strcmp(ext, ".bin"))
@@ -145,7 +144,7 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".a"))
         return "";
 
-    // Extra (Done)
+    // Extra
     if (!strcmp(ext, ".desktop"))
         return "";
     if (!strcmp(ext, ".ttf"))
@@ -153,32 +152,32 @@ char *getIcon(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".otf"))
         return "󰛖";
 
-    // Unknown
+    // Default
     return "";
 }
 
 // Selects the appropriate color
-char *getColor(char *name, unsigned char type, mode_t mode) {
+char *getColor(const char *name, const unsigned char type, const mode_t mode) {
     // Checks if it is executable
     if (type == DT_REG &&
         !strrchr(name, '.') &&
         (mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
         return CRIMSON;
 
-    // Dierctory
+    // Directory
     if (type == DT_DIR)
         return BLUE;
 
-    // Compound extensions first (Done)
+    // Compound extensions first
     if (strstr(name, ".tar."))
         return CORAL;
 
-    // Get extension for rest (Done)
-    char *ext = strrchr(name, '.');
+    // Get extension for the rest
+    const char *ext = strrchr(name, '.');
     if (ext == NULL)
         return RESET;
 
-    // Code / Programming languages (Done)
+    // Programming languages
     if (!strcmp(ext, ".c"))
         return MINT;
     if (!strcmp(ext, ".h"))
@@ -208,7 +207,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".php"))
         return MINT;
 
-    // Shell / Config (Done)
+    // Shell / Config
     if (!strcmp(ext, ".sh"))
         return ORANGE;
     if (!strcmp(ext, ".bash"))
@@ -216,7 +215,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".zsh"))
         return ORANGE;
 
-    // Documents (Done)
+    // Documents
     if (!strcmp(ext, ".txt"))
         return ICE;
     if (!strcmp(ext, ".md"))
@@ -236,7 +235,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".pdf"))
         return ICE;
 
-    // Images (Done)
+    // Images
     if (!strcmp(ext, ".png"))
         return MAGENTA;
     if (!strcmp(ext, ".jpg"))
@@ -250,7 +249,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".webp"))
         return MAGENTA;
 
-    // Video (Done)
+    // Video
     if (!strcmp(ext, ".mp4"))
         return PURPLE;
     if (!strcmp(ext, ".mkv"))
@@ -260,7 +259,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".mov"))
         return PURPLE;
 
-    // Audio (Done)
+    // Audio
     if (!strcmp(ext, ".mp3"))
         return PINK;
     if (!strcmp(ext, ".wav"))
@@ -270,7 +269,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".ogg"))
         return PINK;
 
-    // Archives (Done)
+    // Archives
     if (!strcmp(ext, ".zip"))
         return CORAL;
     if (!strcmp(ext, ".rar"))
@@ -282,7 +281,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".tar"))
         return CORAL;
 
-    // Binaries (Done)
+    // Binaries
     if (!strcmp(ext, ".exe"))
         return CRIMSON;
     if (!strcmp(ext, ".bin"))
@@ -298,7 +297,7 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".rpm"))
         return CRIMSON;
 
-    // Extra (Done)
+    // Extra
     if (!strcmp(ext, ".desktop"))
         return WHITE;
     if (!strcmp(ext, ".ttf"))
@@ -306,6 +305,6 @@ char *getColor(char *name, unsigned char type, mode_t mode) {
     if (!strcmp(ext, ".otf"))
         return WHITE;
 
-    // Unknown
+    // Default
     return RESET;
 }
