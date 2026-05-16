@@ -1,4 +1,4 @@
-#define VERSION "1.4"
+#define VERSION "2.0"
 #include "colors.h"
 #include "config.h"
 #include "detailed.h"
@@ -6,6 +6,7 @@
 #include "sort.h"
 #include "style.h"
 #include "tree.h"
+#include <errno.h>
 #include <dirent.h>
 #include <libgen.h>
 #include <stdio.h>
@@ -64,7 +65,8 @@ int main(int argc, char *argv[]) {
             printf("  -v, --version   Show version info\n");
             printf("\n");
             return 0;
-        } else if (!strcmp(argv[i], "--no-icons")) {
+        }
+        if (!strcmp(argv[i], "--no-icons")) {
             config.icons = 0;
         } else if (!strcmp(argv[i], "--no-color")) {
             config.color = 0;
@@ -72,7 +74,14 @@ int main(int argc, char *argv[]) {
             tree = 1;
         } else if (!strncmp(argv[i], "--tree=", 7)) {
             tree = 1;
-            tree_depth = atoi(argv[i] + 7);
+            char *endptr;
+            errno = 0;
+            long temp = strtol(argv[i] + 7, &endptr, 10);
+            if ((argv[i] + 7) == endptr || *endptr != '\0' || errno == ERANGE) {
+                fprintf(stderr, "Invalid tree depth\n");
+                return 1;
+            }
+            tree_depth = (int)temp;
             if (tree_depth <= 0) {
                 printf("lsi: tree depth must be greater than 0\n");
                 return 1;
