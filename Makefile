@@ -11,4 +11,4 @@ install:
 remove:
 	rm -f $(INSTALL_DIR)/$(TARGET)
 	rm -rf $(HOME)/.config/lsi
-	@echo "lsi removed — binary and config deleted"
+	@echo "lsi: binary and config removed"
