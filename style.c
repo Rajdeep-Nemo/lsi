@@ -73,14 +73,20 @@ char *getIcon(const char *name, const unsigned char type, const mode_t mode) {
         return "";
     if (!strcmp(ext, ".md"))
         return "";
+    if (!strcmp(ext, ".odt"))
+        return "󰧮";
     if (!strcmp(ext, ".docx"))
         return "󰧮";
     if (!strcmp(ext, ".doc"))
         return "󰧮";
+    if (!strcmp(ext, ".ods"))
+        return "󰧷";
     if (!strcmp(ext, ".xlsx"))
         return "󰧷";
     if (!strcmp(ext, ".xls"))
         return "󰧷";
+    if (!strcmp(ext, ".odp"))
+        return "󰐩";
     if (!strcmp(ext, ".pptx"))
         return "󰐩";
     if (!strcmp(ext, ".ppt"))
@@ -224,13 +230,19 @@ char *getColor(const char *name, const unsigned char type, const mode_t mode) {
         return ICE;
     if (!strcmp(ext, ".md"))
         return ICE;
+    if (!strcmp(ext, ".odt"))
+        return ICE;
     if (!strcmp(ext, ".docx"))
         return ICE;
     if (!strcmp(ext, ".doc"))
         return ICE;
+    if (!strcmp(ext, ".ods"))
+        return ICE;
     if (!strcmp(ext, ".xlsx"))
         return ICE;
     if (!strcmp(ext, ".xls"))
+        return ICE;
+    if (!strcmp(ext, ".odp"))
         return ICE;
     if (!strcmp(ext, ".pptx"))
         return ICE;
