@@ -1,4 +1,3 @@
-#define _DEFAULT_SOURCE
 #include "detailed.h"
 #include "colors.h"
 #include "config.h"
@@ -12,45 +11,45 @@
 #include <time.h>
 
 // Formats file size from raw bytes to a more readable format (Color coded)
-static char *format_size_colored(off_t size) {
+static char *format_size_colored(const off_t size) {
     static char formatted_size[128];
     if (size < 1024) {
         snprintf(formatted_size, sizeof(formatted_size), "%ld%s%s%s", size, GREEN, "B", RESET);
     } else if (size < 1024 * 1024) {
-        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", size / 1024.0, YELLOW, "K", RESET);
+        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", (double)size / 1024.0, YELLOW, "K", RESET);
     } else if (size < 1024 * 1024 * 1024) {
-        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", size / 1024.0 / 1024.0, ORANGE, "M", RESET);
+        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", (double)size / 1024.0 / 1024.0, ORANGE, "M", RESET);
     } else {
-        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", size / 1024.0 / 1024.0 / 1024.0, RED, "G", RESET);
+        snprintf(formatted_size, sizeof(formatted_size), "%.1f%s%s%s", (double)size / 1024.0 / 1024.0 / 1024.0, RED, "G", RESET);
     }
     return formatted_size;
 }
 
 // Formats file size from raw bytes to a more readable format (Not color coded)
-static char *format_size(off_t size) {
+static char *format_size(const off_t size) {
     static char formatted_size[128];
     if (size < 1024) {
         snprintf(formatted_size, sizeof(formatted_size), "%ldB", size);
     } else if (size < 1024 * 1024) {
-        snprintf(formatted_size, sizeof(formatted_size), "%.1fK", size / 1024.0);
+        snprintf(formatted_size, sizeof(formatted_size), "%.1fK", (double)size / 1024.0);
     } else if (size < 1024 * 1024 * 1024) {
-        snprintf(formatted_size, sizeof(formatted_size), "%.1fM", size / 1024.0 / 1024.0);
+        snprintf(formatted_size, sizeof(formatted_size), "%.1fM", (double)size / 1024.0 / 1024.0);
     } else {
-        snprintf(formatted_size, sizeof(formatted_size), "%.1fG", size / 1024.0 / 1024.0 / 1024.0);
+        snprintf(formatted_size, sizeof(formatted_size), "%.1fG", (double)size / 1024.0 / 1024.0 / 1024.0);
     }
     return formatted_size;
 }
 
 // Formats seconds to more detailed format
-static char *format_date(time_t mtime) {
+static char *format_date(const time_t time) {
     static char formatted_date_time[128];
-    struct tm *t = localtime(&mtime);
+    const struct tm *t = localtime(&time);
     strftime(formatted_date_time, sizeof(formatted_date_time), "%b %-d %Y %H:%M", t);
     return formatted_date_time;
 }
 
 // Format file permission
-static char *format_permissions(mode_t mode) {
+static char *format_permissions(const mode_t mode) {
     static char perms[11];
 
     perms[0] = S_ISDIR(mode) ? 'd' : '-';
@@ -69,10 +68,10 @@ static char *format_permissions(mode_t mode) {
 }
 
 // Prints a detailed view
-void print_detailed(Entry *entries, int count, int max_len, Config config) {
+void print_detailed(Entry *entries, const int count, const int max_len, const Config config) {
     int max_size_len = 0;
     for (int i = 0; i < count; i++) {
-        int len = strlen(format_size(entries[i].size));
+        const int len = (int)strlen(format_size(entries[i].size));
         if (len > max_size_len) {
             max_size_len = len;
         }
@@ -84,8 +83,8 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
                                                : (config.color ? format_size_colored(entries[i].size)
                                                                : format_size(entries[i].size));
 
-        int plain_len = entries[i].type == DT_DIR ? 1 : strlen(format_size(entries[i].size));
-        int size_padding = max_size_len - plain_len;
+        const int plain_len = entries[i].type == DT_DIR ? 1 : (int)strlen(format_size(entries[i].size));
+        const int size_padding = max_size_len - plain_len;
         char *date = format_date(entries[i].mtime);
         char *mode = format_permissions(entries[i].mode);
 
@@ -98,8 +97,8 @@ void print_detailed(Entry *entries, int count, int max_len, Config config) {
             display_name = entries[i].name;
         }
 
-        int name_len = strlen(display_name);
-        int padding = max_len - name_len;
+        const int name_len = (int)strlen(display_name);
+        const int padding = max_len - name_len;
 
         if (config.icons)
             printf("%s%s %s%s", color, icon, display_name, RESET);
