@@ -22,6 +22,8 @@ char *getIcon(const char *name, const unsigned char type, const mode_t mode) {
     // Compound extensions
     if (strstr(name, ".tar."))
         return "";
+    if (strstr(name, ".blend"))
+        return "󰂫";
 
     // Get extension for the rest
     const char *ext = strrchr(name, '.');
@@ -171,6 +173,8 @@ char *getColor(const char *name, const unsigned char type, const mode_t mode) {
     // Compound extensions first
     if (strstr(name, ".tar."))
         return CORAL;
+    if (strstr(name, ".blend"))
+        return PEACH;
 
     // Get extension for the rest
     const char *ext = strrchr(name, '.');
