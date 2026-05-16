@@ -18,7 +18,7 @@
 #include <unistd.h>
 
 // Visual length for each icon is fixed 2
-int visual_len(char *icon) {
+int visual_len() {
     return 2;
 }
 
@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) {
             }
 
             int name_len = (int)strlen(display_name);
-            int icon_len = visual_len(icon);
+            int icon_len = visual_len();
             int padding = col_width - name_len - icon_len - 1; // 1 for space between icon and name
 
             if (config.icons)
