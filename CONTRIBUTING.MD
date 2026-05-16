@@ -27,5 +27,5 @@ Everyone is free to contribute! To do so:
 This project uses `clang-format` for consistent code formatting. Before submitting a pull request, format your code using the included `.clang-format` file:
 
 ```bash
-clang-format -i *.c *.h
+make format
 ```
