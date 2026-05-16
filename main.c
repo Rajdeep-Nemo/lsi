@@ -99,10 +99,9 @@ int main(int argc, char *argv[]) {
                 config.icons = !strcmp(value, "true") ? 1 : 0;
                 save_config(config);
                 return 0;
-            } else {
-                printf("lsi: invalid value '%s' for --set-icons, use true or false\n", value);
-                return 1;
             }
+            printf("lsi: invalid value '%s' for --set-icons, use true or false\n", value);
+            return 1;
         }
         // Configuration flag for icons
         else if (!strncmp(argv[i], "--set-color=", 12)) {
@@ -111,10 +110,9 @@ int main(int argc, char *argv[]) {
                 config.color = !strcmp(value, "true") ? 1 : 0;
                 save_config(config);
                 return 0;
-            } else {
-                printf("lsi: invalid value '%s' for --set-color, use true or false\n", value);
-                return 1;
             }
+            printf("lsi: invalid value '%s' for --set-color, use true or false\n", value);
+            return 1;
         }
         // Checks if argument is a path
         else if (argv[i][0] != '-') {
@@ -154,7 +152,8 @@ int main(int argc, char *argv[]) {
     if (stat(path, &s) == -1) {
         printf("lsi: cannot access '%s': No such file or directory\n", path);
         return 1;
-    } else if (S_ISREG(s.st_mode)) {
+    }
+    if (S_ISREG(s.st_mode)) {
         if (tree) {
             printf("lsi: '%s' is not a directory\n", path);
             return 1;
