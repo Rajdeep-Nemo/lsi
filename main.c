@@ -1,5 +1,4 @@
-#define VERSION "1.3"
-#define _DEFAULT_SOURCE
+#define VERSION "1.4"
 #include "colors.h"
 #include "config.h"
 #include "detailed.h"
@@ -25,7 +24,7 @@ int visual_len(char *icon) {
 int main(int argc, char *argv[]) {
     // Config (~/.config/lsi/lsi.conf)
     Config config = load_config();
-    // Default path is the same directory the command is being called from
+    // Default path
     char *path = ".";
     // Flag variables
     int show_hidden = 0;
@@ -81,7 +80,6 @@ int main(int argc, char *argv[]) {
         } else if (!strcmp(argv[i], "--version") || !strcmp(argv[i], "-v")) {
 
             printf(CYAN "lsi " YELLOW "%s\n" RESET, VERSION);
-            printf("Copyright(c) 2026 RAJDEEP NEMO\n");
 
             return 0;
         }
@@ -157,7 +155,7 @@ int main(int argc, char *argv[]) {
             strcpy(e.name, path);
             e.type = DT_REG;
             e.size = s.st_size;
-            e.mtime = s.st_mtime;
+            e.time = s.st_mtime;
             e.mode = s.st_mode;
             print_detailed(&e, 1, strlen(path), config);
         } else { // If a single file is given as parameter, it will list the file itself (e.g. lsi main.c)
@@ -192,10 +190,10 @@ int main(int argc, char *argv[]) {
         entries[count].type = entry->d_type;
         char full_path[1024];
         snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
-        struct stat s;
+        //struct stat s;
         stat(full_path, &s);
         entries[count].size = s.st_size;
-        entries[count].mtime = s.st_mtime;
+        entries[count].time = s.st_mtime;
         entries[count].mode = s.st_mode;
         count += 1;
     }
