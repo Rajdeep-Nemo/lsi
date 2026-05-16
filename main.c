@@ -6,8 +6,8 @@
 #include "sort.h"
 #include "style.h"
 #include "tree.h"
-#include <errno.h>
 #include <dirent.h>
+#include <errno.h>
 #include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,9 +18,7 @@
 #include <unistd.h>
 
 // Visual length for each icon is fixed 2
-int visual_len() {
-    return 2;
-}
+int visual_len() { return 2; }
 
 int main(int argc, char *argv[]) {
     // Config (~/.config/lsi/lsi.conf)
@@ -198,7 +196,7 @@ int main(int argc, char *argv[]) {
         entries[count].type = entry->d_type;
         char full_path[1024];
         snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
-        //struct stat s;
+        // struct stat s;
         stat(full_path, &s);
         entries[count].size = s.st_size;
         entries[count].time = s.st_mtime;

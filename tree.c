@@ -1,12 +1,12 @@
+#include "colors.h"
 #include "config.h"
 #include "entry.h"
-#include "colors.h"
-#include "style.h"
 #include "sort.h"
+#include "style.h"
 #include <dirent.h>
 #include <stdio.h>
-#include <sys/stat.h>
 #include <string.h>
+#include <sys/stat.h>
 
 // Recursive function for tree view
 void print_tree(char *path, const int depth, const int max_depth, const Config config, char *prefix, const int show_hidden) {
