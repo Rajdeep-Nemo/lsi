@@ -44,4 +44,15 @@ func main() {
 
 	flag.Parse()
 
+	// Handle Configs
+	if flag.CommandLine.Changed("set-icon") || flag.CommandLine.Changed("set-color") {
+		if flag.CommandLine.Changed("set-icon") {
+
+		}
+		if flag.CommandLine.Changed("set-color") {
+
+		}
+		os.Exit(0)
+	}
+
 }
