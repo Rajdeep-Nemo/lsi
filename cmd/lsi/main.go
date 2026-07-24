@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"github.com/Rajdeep-Nemo/lsi/pkg/config"
 	flag "github.com/spf13/pflag"
 )
 
@@ -16,9 +17,7 @@ func main() {
 		reverseSort        bool
 		sortBySize         bool
 		sortByDateModified bool
-		// Tree
-		treeDepth int
-		// Temporary
+		// Temporary styling
 		noColor bool
 		noIcon  bool
 		// Config
@@ -32,9 +31,6 @@ func main() {
 	flag.BoolVarP(&reverseSort, "", "r", false, "Reverse the order")
 	flag.BoolVarP(&sortBySize, "", "s", false, "Sort by size")
 	flag.BoolVarP(&sortByDateModified, "", "t", false, "Sort by date modified")
-	// Tree flags
-	flag.IntVarP(&treeDepth, "tree", "", 0, "Tree view with optional depth (default depth 1)")
-	flag.Lookup("tree").NoOptDefVal = "1" // Defaults to 1
 	// Temporary flags
 	flag.BoolVarP(&noColor, "no-color", "", false, "Temporarily disable colors")
 	flag.BoolVarP(&noIcon, "no-icon", "", false, "Temporarily disable icons")
@@ -44,7 +40,7 @@ func main() {
 
 	flag.Parse()
 
-	// Handle Configs
+	// Handle Configs (Temporary)
 	if flag.CommandLine.Changed("set-icon") || flag.CommandLine.Changed("set-color") {
 		if flag.CommandLine.Changed("set-icon") {
 
@@ -54,17 +50,15 @@ func main() {
 		}
 		os.Exit(0)
 	}
-
-	// Tree Mode
-	isTreeMode := flag.CommandLine.Changed("tree")
-	hasConflict := showDetailed || onePerLine || reverseSort || sortBySize || sortByDateModified
-
-	if isTreeMode && hasConflict {
-		fmt.Fprintln(os.Stderr, "lsi: error: tree view (--tree): Incompatible flag combinations.")
-		fmt.Fprintln(os.Stderr, "Try 'lsi --help' for more information.")
-		os.Exit(1)
+	
+	// Path resolution
+	targetPath := "."
+	// If argument is present after path resolution consider that as path
+	if flag.NArg() > 0 {
+		targetPath = flag.Arg(0)
 	}
-	if treeDepth < 1 {
-		
-	}
+
+	// Gets configs from config file
+	
+	
 }
