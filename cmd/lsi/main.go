@@ -55,4 +55,16 @@ func main() {
 		os.Exit(0)
 	}
 
+	// Tree Mode
+	isTreeMode := flag.CommandLine.Changed("tree")
+	hasConflict := showDetailed || onePerLine || reverseSort || sortBySize || sortByDateModified
+
+	if isTreeMode && hasConflict {
+		fmt.Fprintln(os.Stderr, "lsi: error: tree view (--tree): Incompatible flag combinations.")
+		fmt.Fprintln(os.Stderr, "Try 'lsi --help' for more information.")
+		os.Exit(1)
+	}
+	if treeDepth < 1 {
+		
+	}
 }
