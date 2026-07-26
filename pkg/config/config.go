@@ -39,3 +39,23 @@ func configPath() (string, error) {
 	}
 	return filepath.Join(configDir, "lsi", "lsi.json"), nil
 }
+
+// Saves the config to disk
+func SaveConfig(cfg *Config) error {
+	// Gets the path
+	path, err := configPath()
+	if err != nil{
+		return err
+	}
+	// Creates the directory if needed
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return err
+	}
+	// Format the json data
+	data, err := json.MarshalIndent(cfg, "", "    ")
+	if err != nil {
+		return err
+	}
+	// Writes back to disk
+	return os.WriteFile(path, data, 0644)
+}
