@@ -59,3 +59,23 @@ func SaveConfig(cfg *Config) error {
 	// Writes back to disk
 	return os.WriteFile(path, data, 0644)
 }
+
+// Load the config
+func LoadConfig() (*Config, error){
+	// Gets the path
+	path, err := configPath()
+	if err != nil {
+		return nil,err
+	}
+	// Gets the data, if file is missing writes default
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return resetDefault()
+	}
+	// Reads the json data, if file is missing writes default
+	var cfg Config
+	if err := json.Unmarshal(data, &cfg); err != nil {
+		return resetDefault()
+	}
+	return &cfg, nil
+}
