@@ -1,11 +1,10 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
-	"encoding/json"
 )
 
 // Struct to hold values
@@ -20,6 +19,15 @@ var defaultConfig = Config{
 	ShowColor: true,
 }
 
+// Helper function to reset defaults if missing or corrupted config file
+func resetDefault() (*Config, error) {
+	cfg := defaultConfig
+	if err := SaveConfig(&cfg); err != nil {
+		return nil, err
+	}
+	return &cfg, nil
+}
+
 // Returns the path of the config file
 func configPath() (string, error) {
 	// Config Dir:
@@ -31,4 +39,3 @@ func configPath() (string, error) {
 	}
 	return filepath.Join(configDir, "lsi", "lsi.json"), nil
 }
-
