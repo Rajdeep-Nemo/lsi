@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // Struct to hold values
 type Config struct {
-	showIcons bool
-	showColor bool
+	ShowIcons bool
+	ShowColor bool
 }
 
 // Default config to use
@@ -48,15 +49,78 @@ func initConfig() error {
 	return os.WriteFile(path, []byte(defaultConfig), 0644)
 }
 
-// Reads and parses the config into the struct
-func loadConfig() (*Config, error){
-	
+// Reads/parses the config and resets it if the file is corrupted
+func LoadConfig() (*Config, error) {
+	if err := initConfig(); err != nil {
+		return nil, err
+	}
+
+	path, err := configPath()
+	if err != nil {
+		return nil, err
+	}
+
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+
+	lines := strings.SplitN(string(data), "\n", 2)
+
+	// Helper function to reset the file with defaults
+	resetConfig := func() (*Config, error) {
+		err := os.WriteFile(path, []byte(defaultConfig), 0644)
+		if err != nil {
+			return nil, err
+		}
+		return &Config{ShowIcons: true, ShowColor: true}, nil
+	}
+
+	cfg := &Config{}
+	parsedIcons := false
+	parsedColor := false
+
+	for _, line := range lines {
+		if strings.TrimSpace(line) == "" {
+			continue
+		}
+
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) != 2 {
+			return resetConfig()
+		}
+
+		key := strings.TrimSpace(parts[0])
+		value := strings.TrimSpace(parts[1])
+
+		if value != "true" && value != "false" {
+			return resetConfig()
+		}
+
+		switch key {
+		case "icons":
+			cfg.ShowIcons = (value == "true")
+			parsedIcons = true
+		case "color":
+			cfg.ShowColor = (value == "true")
+			parsedColor = true
+		default:
+			return resetConfig()
+		}
+	}
+
+	if !parsedIcons || !parsedColor {
+		return resetConfig()
+	}
+
+	return cfg, nil
 }
 
-func handleConfigChange(key, value string) {
-	if value != "true" && value != "false" {
-		fmt.Fprintf(os.Stderr, "lsi: invalid value '%s' for --set-%s\n", value, key)
-		os.Exit(1)
+func SaveConfig(cfg *Config) error {
+	path , err := configPath()
+	if err != nil {
+		return err
 	}
-	// config.Save(...)
+
+	content := 
 }
