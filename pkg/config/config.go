@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -44,7 +43,7 @@ func configPath() (string, error) {
 func SaveConfig(cfg *Config) error {
 	// Gets the path
 	path, err := configPath()
-	if err != nil{
+	if err != nil {
 		return err
 	}
 	// Creates the directory if needed
@@ -61,11 +60,11 @@ func SaveConfig(cfg *Config) error {
 }
 
 // Load the config
-func LoadConfig() (*Config, error){
+func LoadConfig() (*Config, error) {
 	// Gets the path
 	path, err := configPath()
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	// Gets the data, if file is missing writes default
 	data, err := os.ReadFile(path)
@@ -78,4 +77,22 @@ func LoadConfig() (*Config, error){
 		return resetDefault()
 	}
 	return &cfg, nil
+}
+
+// Set options when changed
+func SetOptions(key string, value bool) error {
+	// Loads the config
+	cfg, err := LoadConfig()
+	if err != nil {
+		return err
+	}
+	// Sets the value
+	switch key {
+	case "icons":
+		cfg.ShowIcons = value
+	case "color":
+		cfg.ShowColor = value
+	}
+	// Saves it
+	return SaveConfig(cfg)
 }
