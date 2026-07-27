@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"os"
 	"github.com/Rajdeep-Nemo/lsi/pkg/config"
-	flag "github.com/spf13/pflag"
+	"github.com/spf13/pflag"
 )
 
 func main() {
-	// Flag variables
+	// flag variables
 	var (
-		// Basic
+		// Basics
 		showHidden         bool
 		showDetailed       bool
 		onePerLine         bool
@@ -21,44 +21,47 @@ func main() {
 		noColor bool
 		noIcon  bool
 		// Config
-		setIcon  string
-		setColor string
+		setIcon  bool
+		setColor bool
 	)
 	// Basic flags
-	flag.BoolVarP(&showHidden, "", "a", false, "Show hidden files")
-	flag.BoolVarP(&showDetailed, "", "l", false, "Detailed view")
-	flag.BoolVarP(&onePerLine, "", "1", false, "One entry per line")
-	flag.BoolVarP(&reverseSort, "", "r", false, "Reverse the order")
-	flag.BoolVarP(&sortBySize, "", "s", false, "Sort by size")
-	flag.BoolVarP(&sortByDateModified, "", "t", false, "Sort by date modified")
+	pflag.BoolVarP(&showHidden, "", "a", false, "Show hidden files")
+	pflag.BoolVarP(&showDetailed, "", "l", false, "Detailed view")
+	pflag.BoolVarP(&onePerLine, "", "1", false, "One entry per line")
+	pflag.BoolVarP(&reverseSort, "", "r", false, "Reverse the order")
+	pflag.BoolVarP(&sortBySize, "", "s", false, "Sort by size")
+	pflag.BoolVarP(&sortByDateModified, "", "t", false, "Sort by date modified")
 	// Temporary flags
-	flag.BoolVarP(&noColor, "no-color", "", false, "Temporarily disable colors")
-	flag.BoolVarP(&noIcon, "no-icon", "", false, "Temporarily disable icons")
+	pflag.BoolVarP(&noColor, "no-color", "", false, "Temporarily disable colors")
+	pflag.BoolVarP(&noIcon, "no-icon", "", false, "Temporarily disable icons")
 	// Config flags
-	flag.StringVar(&setIcon, "set-icon", "", "Set icon state in config")
-	flag.StringVar(&setColor, "set-color", "", "Set color state in config")
+	pflag.BoolVar(&setIcon, "set-icon", true, "Set icon state in config")
+	pflag.BoolVar(&setColor, "set-color", true, "Set color state in config")
 
-	flag.Parse()
+	pflag.Parse()
 
-	// Handle Configs (Temporary)
-	if flag.CommandLine.Changed("set-icon") || flag.CommandLine.Changed("set-color") {
-		if flag.CommandLine.Changed("set-icon") {
-
+	// Handle Config Changes
+	if pflag.CommandLine.Changed("set-icon") || pflag.CommandLine.Changed("set-color") {
+		if pflag.CommandLine.Changed("set-icon") {
+			config.SetOptions("icons", setIcon)
 		}
-		if flag.CommandLine.Changed("set-color") {
-
+		if pflag.CommandLine.Changed("set-color") {
+			config.SetOptions("color", setColor)
 		}
 		os.Exit(0)
 	}
-	
+
 	// Path resolution
 	targetPath := "."
 	// If argument is present after path resolution consider that as path
-	if flag.NArg() > 0 {
-		targetPath = flag.Arg(0)
+	if pflag.NArg() > 0 {
+		targetPath = pflag.Arg(0)
 	}
-
+	
 	// Gets configs from config file
-	
-	
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		os.Exit(0)
+	}
+	fmt.Println(cfg.ShowIcons)
 }
