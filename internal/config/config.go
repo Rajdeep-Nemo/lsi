@@ -6,13 +6,13 @@ import (
 	"path/filepath"
 )
 
-// Struct to hold values
+// Struct to hold config values
 type Config struct {
 	ShowIcons bool `json:"icons"`
 	ShowColor bool `json:"color"`
 }
 
-// Default config to use
+// Default configuration
 var defaultConfig = Config{
 	ShowIcons: true,
 	ShowColor: true,
