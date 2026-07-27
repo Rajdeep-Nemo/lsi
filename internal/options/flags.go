@@ -3,9 +3,12 @@ package options
 import (
 	"github.com/spf13/pflag"
 )
+
 // Struct to hold the state of input (flags and path)
 type Options struct {
 	Path string
+
+	ShowVersion bool
 
 	ShowHidden   bool
 	ShowDetailed bool
@@ -25,6 +28,7 @@ type Options struct {
 func Parse() Options {
 	var opts Options
 	// Basic flags
+	pflag.BoolVarP(&opts.ShowVersion, "version", "v", false, "Show version info")
 	pflag.BoolVarP(&opts.ShowHidden, "", "a", false, "Show hidden files")
 	pflag.BoolVarP(&opts.ShowDetailed, "", "l", false, "Detailed view")
 	pflag.BoolVarP(&opts.OnePerLine, "", "1", false, "One entry per line")
